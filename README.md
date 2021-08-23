@@ -1,1 +1,3 @@
-# yaqeen
+# Yaqeen
+
+Insurance Management System

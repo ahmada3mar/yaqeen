@@ -1,5 +1,6 @@
 {
   "main": "node_modules/expo/AppEntry.js",
+  "proxy": "http://192.168.20.22/",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -8,11 +9,24 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "axios": "^0.21.4",
+    "buffer": "^6.0.3",
     "expo": "~42.0.1",
+    "expo-camera": "^11.2.2",
+    "expo-image-picker": "~10.2.2",
+    "expo-permissions": "~12.1.1",
     "expo-status-bar": "~1.0.4",
+    "firebase": "8.2.3",
+    "https-proxy-agent": "^5.0.0",
+    "nanoid": "^3.1.25",
+    "qs": "^6.10.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
+    "react-native-camera": "^4.2.0",
+    "react-native-html-parser": "^0.1.0",
+    "react-native-ip-sec-vpn": "^1.1.1",
+    "react-native-mlkit-ocr": "^0.2.3",
     "react-native-web": "~0.13.12"
   },
   "devDependencies": {

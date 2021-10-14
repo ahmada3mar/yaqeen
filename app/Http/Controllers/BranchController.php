@@ -45,11 +45,11 @@ class BranchController extends Controller
             'total_los_vans' => 'required|numeric|min:180',
             'total_los_pickups' => 'required|numeric|min:86',
             'full_cover_cars' => 'required|numeric|min:86',
-            'full_cover_cars_per_k' => 'required|numeric|min:86',
+            'full_cover_cars_per_k' => 'required|numeric',
             'full_cover_vans' => 'required|numeric|min:86',
-            'full_cover_vans_per_k' => 'required|numeric|min:86',
+            'full_cover_vans_per_k' => 'required|numeric',
             'full_cover_pickups' => 'required|numeric|min:86',
-            'full_cover_pickups_per_k' => 'required|numeric|min:86',
+            'full_cover_pickups_per_k' => 'required|numeric',
         ]);
         Branch::create($data);
 

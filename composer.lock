@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6cadd819a6415b190ae2704ced6e6c8b",
+    "content-hash": "4e8c2ef06996fa81d082abc003e6702e",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4463,16 +4463,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v5.3.4",
+            "version": "v5.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "d16634ee55b895bd85ec714dadc58e4428ecf030"
+                "reference": "38f26c7d6ed535217ea393e05634cb0b244a1967"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/d16634ee55b895bd85ec714dadc58e4428ecf030",
-                "reference": "d16634ee55b895bd85ec714dadc58e4428ecf030",
+                "url": "https://api.github.com/repos/symfony/process/zipball/38f26c7d6ed535217ea393e05634cb0b244a1967",
+                "reference": "38f26c7d6ed535217ea393e05634cb0b244a1967",
                 "shasum": ""
             },
             "require": {
@@ -4505,7 +4505,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v5.3.4"
+                "source": "https://github.com/symfony/process/tree/v5.3.7"
             },
             "funding": [
                 {
@@ -4521,7 +4521,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-23T15:54:19+00:00"
+            "time": "2021-08-04T21:20:46+00:00"
         },
         {
             "name": "symfony/routing",
@@ -7812,5 +7812,5 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.0.0"
 }

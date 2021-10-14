@@ -13,9 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'LoginController@index')->name('login');
 Route::get('/portal', 'LoginController@portal')->name('portal');
-Route::get('/pending-policy', 'LoginController@pending')->name('pending');
+// Route::get('/{id}', 'LoginController@index')->name('login');
+
+# policy
+Route::get('/policy', 'PolicyController@index')->name('policy');
+Route::get('/pending-policy', 'PolicyController@pending')->name('pending-policy');
+Route::get('/create-policy', 'PolicyController@create')->name('create-policy');
+## branches
 Route::get('/branches', 'BranchController@index')->name('branches');
 Route::get('/branches/create', 'BranchController@create')->name('create-branches');
 Route::get('/branches/store', 'BranchController@store')->name('store-branches');

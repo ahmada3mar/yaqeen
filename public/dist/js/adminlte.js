@@ -1738,12 +1738,12 @@
       }
 
       var $contentSelector = $__default['default'](SELECTOR_CONTENT);
-
+console.log( heights.header , heights.footer)
       if (offset !== false) {
         if (max === heights.controlSidebar) {
           $contentSelector.css(this._config.panelAutoHeightMode, max + offset);
         } else if (max === heights.window) {
-          $contentSelector.css(this._config.panelAutoHeightMode, max + offset - heights.header - heights.footer);
+          $contentSelector.css(this._config.panelAutoHeightMode, (max + offset - heights.header - heights.footer) -0.4);
         } else {
           $contentSelector.css(this._config.panelAutoHeightMode, max + offset - heights.header);
         }

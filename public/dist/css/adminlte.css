@@ -3806,7 +3806,7 @@ input[type="button"].btn-block {
 .custom-control-inline {
   display: -ms-inline-flexbox;
   display: inline-flex;
-  margin-right: 1rem;
+  margin-right: 2rem;
 }
 
 .custom-control-input {
@@ -3857,7 +3857,7 @@ input[type="button"].btn-block {
 .custom-control-label::before {
   position: absolute;
   top: 0.25rem;
-  left: -1.5rem;
+  right: -1.5rem;
   display: block;
   width: 1rem;
   height: 1rem;
@@ -3871,7 +3871,7 @@ input[type="button"].btn-block {
 .custom-control-label::after {
   position: absolute;
   top: 0.25rem;
-  left: -1.5rem;
+  right: -1.5rem;
   display: block;
   width: 1rem;
   height: 1rem;
@@ -12582,6 +12582,42 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
 .sidebar:hover::-webkit-scrollbar {
   width: .5rem;
   height: .5rem;
+  transition: background-color 1s ;
+
+}
+
+table::-webkit-scrollbar-thumb {
+  background-color: #a9a9a934;
+  border-radius: 50px;
+  -webkit-transition: background-color 1000ms linear;
+    -ms-transition: background-color 1000ms linear;
+    transition: background-color 1000ms linear;
+}
+
+
+table::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+table::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+table::-webkit-scrollbar {
+    width: .5rem;
+    height: .5rem;
+
+}
+
+table:hover {
+  scrollbar-width: thin;
+}
+
+table:hover::-webkit-scrollbar-thumb {
+    background-color: #a9a9a9;
+    -webkit-transition: background-color 1000ms linear;
+    -ms-transition: background-color 1000ms linear;
+    transition: background-color 1000ms linear;
 }
 
 .brand-link.border-bottom-0 ~ .sidebar {
@@ -28723,10 +28759,14 @@ html.maximized-card {
 }
 
 .card-title {
-  float: left;
   font-size: 1.1rem;
   font-weight: 400;
   margin: 0;
+  padding: 5px;
+}
+
+.card-title-dark {
+    background-color: #8e8f91;
 }
 
 .card-text {

@@ -5,18 +5,33 @@ namespace App\Http\Controllers;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class LoginController extends Controller
 {
 
-    public function index(){
+    public function index($id){
 
+    // return base_path();
+        // $process = new Process(['C:\Users\User\AppData\Local\Programs\Python\Python39\python.exe' , 'main.py' , "F:\\Python\\POC\\$id.jpeg"]);
+        // $process->run();
+
+        // // executes after the command finishes
+        // if (!$process->isSuccessful()) {
+        //     throw new ProcessFailedException($process);
+        // }
+
+        // $data = $process->getOutput() ;
+        // $data = json_decode($data , true );
+        // if($data)
+        //     return ['data' => $data];
 
 
         return redirect(route('portal'));
     }
 
-    public function portal($PlateNoT =null ){
+    public function portal(){
 
 
 

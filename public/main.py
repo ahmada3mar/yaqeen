@@ -14,10 +14,10 @@ else :
 
 pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 
-imgQ = cv2.imread('F:\\Python\\POC\\test.jpeg')
+imgQ = cv2.imread('D:\\Yaqeen\\web\\public\\model.jpeg')
 h,w , c = imgQ.shape
 
-roi = [[(1087, 275), (542, 421), 'text', 'both']]
+roi = [[(980, 275), (460, 405), 'text', 'both']]
 myData = []
 
 orb = cv2.ORB_create(10000)
@@ -77,6 +77,8 @@ for x,r in enumerate(roi):
         gray=cv2.medianBlur(gray,3)
 
         data = pytesseract. image_to_string(gray , 'eng' , r'--oem 3  -c tessedit_char_blacklist=QOIqoi-.~ ')
+        # cv2.imshow(str(x) , gray)
+
         data = data. replace(' ' , '' )
         data = data. replace('_' , '' )
         # dataList = re.search(r'[^OIQ]{11}[0-9]{6}',data) # split the string
@@ -87,7 +89,6 @@ for x,r in enumerate(roi):
         # # data = dataList.group()
         # print(f'{dataList[0]}')
         # cv2.imshow(str(x) , gray)
-        # cv2.imshow(str(x) , imgShow)
 
         myData.append(data)
 
@@ -101,5 +102,6 @@ for x,r in enumerate(roi):
 # cv2.imshow(str('kk') , imgShow)
 # print(str(data))
 print(json.dumps(dataList))
+# cv2.waitKey(0)
 exit()
 

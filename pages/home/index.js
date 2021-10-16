@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
-import { ScrollView, Text , View , StyleSheet , ImageBackground , Dimensions } from 'react-native';
-import full_cover from '../../img/full-cover.png'
+import { ScrollView, Text , View , StyleSheet , ImageBackground , Dimensions, TouchableOpacity  } from 'react-native';
+import full_cover from '../../img/full-cover.png';
+import total_loss from '../../img/total-loss.png';
 
 
-export default function Home(){
+export default function Home({ navigation }){
+
 
 
     return(
@@ -49,15 +51,17 @@ export default function Home(){
         </ScrollView>
             <View style={{ flex:1  , marginVertical:5}}>
                 <ImageBackground source={full_cover} style={{ borderWidth:1 , borderColor:'black' , borderRadius:5  , height:250}}/>
-                <View style={{ justifyContent:'center' , alignItems:'center',position:'absolute' , bottom:0 , backgroundColor:'#ffffff91' , width:'100%' , height:50 }}>
+                <View style={{ justifyContent:'center' , alignItems:'center',position:'absolute' , bottom:0 , backgroundColor:'#000000c7' , width:'100%' , height:50 }}>
                     <Text style={{ fontSize:26 , fontWeight:'bold' , color:'teal' }}>طلب تأمين شامل</Text>
                 </View>
             </View>
             <View style={{ flex:1  , marginVertical:5}}>
-                <ImageBackground source={full_cover} style={{ borderWidth:1 , borderColor:'black' , borderRadius:5  , height:250}}/>
-                <View style={{ justifyContent:'center' , alignItems:'center',position:'absolute' , bottom:0 , backgroundColor:'#ffffff91' , width:'100%' , height:50 }}>
-                    <Text style={{ fontSize:26 , fontWeight:'bold' , color:'teal' }}>طلب تأمين شامل</Text>
-                </View>
+                <TouchableOpacity onPress={ () => navigation.navigate('طلب خسارة كلية') }>
+                    <ImageBackground source={total_loss} style={{ borderWidth:1 , borderColor:'black' , borderRadius:5  , height:250}}/>
+                    <View style={{ justifyContent:'center' , alignItems:'center',position:'absolute' , bottom:0 , backgroundColor:'#000000c7' , width:'100%' , height:50 }}>
+                        <Text style={{ fontSize:26 , fontWeight:'bold' , color:'teal' }}>طلب تأمين خسارة كلية</Text>
+                    </View>
+                </TouchableOpacity >
             </View>
             <View style={{ flex:1  , marginVertical:5}}>
                 <ImageBackground source={full_cover} style={{ borderWidth:1 , borderColor:'black' , borderRadius:5  , height:250}}/>

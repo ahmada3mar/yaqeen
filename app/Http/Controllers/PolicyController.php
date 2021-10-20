@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Policy;
 use Illuminate\Http\Request;
 
 class PolicyController extends Controller
@@ -28,15 +29,44 @@ class PolicyController extends Controller
 
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+
+
     public function store(Request $request)
     {
-        //
+        $policy = Policy::create(
+            [
+                'name' => $request->name ,
+                'branch_id' => 1 ,
+                'type' => $request->policy_type ,
+                'car_price' => $request->car_price ?? 3000 ,
+                'car_type' => $request->type ,
+                'car_number' => $request->number ,
+                'car_name' => 'هينوداي' ,
+                'car_model' => 2015 ,
+                'body_number' => $request->body ,
+                'eng_number' => $request->eng ,
+                'start_at' => '2021-01-01' ,
+                'end_at' => '2021-01-01' ,
+                'policy_date' => date('Y'),
+                'cost' => 86 ,
+                'price' => $request->cost ,
+                ]
+            );
+        return $policy;
+    }
+
+    public function getPolicy(Request $request)
+    {
+        // return $request();
+        return Policy::where('branch_id' , 1)->latest()->get();
     }
 
     /**

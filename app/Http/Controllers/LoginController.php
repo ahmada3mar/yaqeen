@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -30,6 +32,7 @@ class LoginController extends Controller
 
         return redirect(route('portal'));
     }
+
 
     public function portal(){
 
@@ -113,7 +116,7 @@ class LoginController extends Controller
         return view('admin.pending_policy.index');
     }
 
-    public function test(Request $request){
+    public function BackID(Request $request){
 
         $file = $request->file('file');
         $destinationPath = 'file_storage/';
@@ -121,7 +124,7 @@ class LoginController extends Controller
         $file->move($destinationPath, $filename);
 
 
-        $process = new Process(['C:\\Users\\ahmad\\AppData\\Local\\Programs\\Python\\Python39\\python.exe', 'main.py' , public_path('file_storage') . '\\' . $filename]);
+        $process = new Process(['C:\\Users\\user\\AppData\\Local\\Programs\\Python\\Python39\\python.exe', 'main.py' , public_path('file_storage') . '\\' . $filename]);
         $process->run();
 
         // executes after the command finishes
@@ -138,7 +141,7 @@ class LoginController extends Controller
         return 'dd';
     }
 
-    public function test_front(Request $request){
+    public function FrontID(Request $request){
 
         $file = $request->file('file');
         $destinationPath = 'file_storage/';
@@ -146,7 +149,7 @@ class LoginController extends Controller
         $file->move($destinationPath, $filename);
 
 
-        $process = new Process(['C:\\Users\\ahmad\\AppData\\Local\\Programs\\Python\\Python39\\python.exe', 'main_front.py' , public_path('file_storage') . '\\' . $filename]);
+        $process = new Process(['C:\\Users\\user\\AppData\\Local\\Programs\\Python\\Python39\\python.exe', 'main_front.py' , public_path('file_storage') . '\\' . $filename]);
         $process->run();
 
         // executes after the command finishes
@@ -165,6 +168,7 @@ class LoginController extends Controller
 
     public function checkKroka(Request $request){
 
+
         // return $request->body;
         $client = new Client(['base_uri' => 'http://192.168.20.22/' , 'cookies' => true]);
         $response = $client->get( 'krooka/login.aspx?&d=1632004121646&UN=issakh&P=0000');
@@ -175,7 +179,7 @@ class LoginController extends Controller
             'PlateNoT' => '0' ,
             'PlateNo' => '' ,
             'RegNo' => '' ,
-            'ShasiNo' => $request->body,
+            'ShasiNo' => $request->car['body'],
             'AccDateFromVar' => '' ,
             'AccDateToVar' => '' ,
             'EngineNo' => '' ,
@@ -230,10 +234,39 @@ class LoginController extends Controller
         }
         $cc = $response2->getBody()->getContents() ;
 
+        $krooka = html_to_obj($cc);
+        $cost =  $krooka['html'] == ' لا يوجد نتائج ، الرجاء المحاولة مرة أخرى ' ?  Branch::first()->total_los_cars : Branch::first()->total_los_cars_accedint ;
 
 
-        return  html_to_obj($cc)  ;
+
+
+        return [
+            'cost' => $cost ,
+            'krooka' => $krooka
+        ] ;
     }
 
+    public function login(Request $request)
+    {
+        // return $request->all() ;
+        if(Auth::user()){
+            return Auth::user();
+        }
 
+        if (Auth::attempt($request->all())) {
+            $request->session()->regenerate();
+            $user = Auth::user();
+            return [$user , $user->createToken('yaqeenToken')->plainTextToken];
+        }else{
+            return 'faild';
+        }
+
+
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return 'succsess' ;
+    }
 }

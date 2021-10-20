@@ -15,9 +15,9 @@ else :
     exit()
 
 # print (str(receved_img))
-pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe"
 
-imgQ = cv2.imread('D:\\Yaqeen\\web\\public\\model_front.jpeg')
+imgQ = cv2.imread('F:\\Yaqeen\\public\\model_front.jpeg')
 h,w , c = imgQ.shape
 roi = [[(776, 173), (340, 238), 'text', 'name'], [(449, 528), (76, 600), 'text', 'number']]
 

@@ -29,6 +29,10 @@ class BranchController extends Controller
     {
         return view('admin.branches.create');
     }
+    public function privacy()
+    {
+        return view('admin.branches.privacy');
+    }
 
     /**
      * Store a newly created resource in storage.

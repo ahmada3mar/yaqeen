@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ScrollView, Text , View , StyleSheet , ImageBackground , Dimensions, Button, TouchableOpacity  , Animated , Easing, TextInput, Picker} from 'react-native';
+import React, { useState , useCallback, useEffect } from 'react';
+import { ScrollView, Text , View , StyleSheet , ImageBackground , Dimensions, Button, TouchableOpacity  , Animated , Easing, TextInput, Picker, Alert , AsyncStorage} from 'react-native';
 import full_cover from '../../img/full-cover.png'
 import RadioButtonRN from 'radio-buttons-react-native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -19,26 +19,25 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const AppStack = createNativeStackNavigator();
 
-
+const  _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('token');
+      if (value !== null) {
+        // We have data!!
+        return value
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+}
 
 
 function Create(props){
     const [image , setImage] = useState(null)
     const [imageBack , setImageBack] = useState(null)
     const [uploading , setUploading] = useState(null)
-    const [dataTosend , setDataTosend] = useState({})
-    const [carObj , setCarObj] = useState({})
+    const [carObj , setCarObj] = useState({policy_type:'1'})
 
-    const go = ()=>{
-        props.navigation.dispatch(
-            CommonActions.reset({
-                index: 0,
-                routes: [
-                    { name: 'الرئيسية' }
-                ]
-            })
-        );
-        }
 
     // useFocusEffect(()=>{
     //     console.log(dataTosend)
@@ -63,7 +62,7 @@ function Create(props){
             
 			setUploading(true)
             setImage(manipResult);
-            axFront(manipResult.uri , 'http://192.168.1.63:80/api/test-front');
+            axFront(manipResult.uri , 'http://92.253.102.198/api/FrontID');
 
 
 		} catch (e) {
@@ -108,7 +107,7 @@ function Create(props){
              
 			setUploading(true)
             setImageBack(manipResult);
-            ax(manipResult.uri , 'http://192.168.1.63:80/api/test');
+            ax(manipResult.uri , 'http://92.253.102.198/api/BackID');
 
 
 
@@ -341,7 +340,7 @@ function Next(props){
 
 function checkout(props){
 
-    const [kroka , setKroka] = useState(null)
+    const [carObj , setCarObj] = useState(props.route.params.carObj || {})
 
     const spinValue = new Animated.Value(0)
 
@@ -362,19 +361,50 @@ function checkout(props){
         outputRange: ['0deg', '360deg']
       })
 
+      const getKrooka = async () => {
+        const res = await axios.post( 'http://92.253.102.198/api/checkKroka' , {car:carObj})
+        if(res.data){
+            console.log(res.data)
+            setCarObj(k => { return  { ...k , krooka :  res.data.krooka.html == ' لا يوجد نتائج ، الرجاء المحاولة مرة أخرى ' ? 'لا يوجد حوادث ' : res.data.krooka.html , cost:res.data.cost }})
+        }
+}
 
+     const store = async () => {
+        const res = await axios.post( 'http://92.253.102.198/api/store-policy' , carObj)
+        if(res.data.id){
+            props.navigation.dispatch(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [
+                        { name: 'الرئيسية' }
+                    ]
+                })
+            );
+        }else{
+            Alert.alert('فشل يرجى المحاولة مرة اخرى')
+        }
 
-    useFocusEffect(()=>{
-        axios.post( 'http://192.168.1.63/api/checkKroka' , {body:props.route.params.carObj.body})
-        .then(res=>{
+     }
+      useEffect(()=>{
+         getKrooka();
+      } , [props.navigation]
+      );
 
-            console.log(res.data);
-            if(res.data.html)
-                setKroka(res.data.html == ' لا يوجد نتائج ، الرجاء المحاولة مرة أخرى ' ? 'لا يوجد حوادث ' : res.data.html)
-        })
-    })
+      
+
+    // useFocusEffect(React.useCallback(() => {
+    //     axios.post( 'http://92.253.102.198/api/checkKroka' , {body:carObj.body})
+    //     .then(res=>{
+  
+    //         console.log(res.data);
+    //         if(res.data.html)
+    //         setCarObj(k => { return  { ...k , krooka :  res.data.html == ' لا يوجد نتائج ، الرجاء المحاولة مرة أخرى ' ? 'لا يوجد حوادث ' : res.data.html }})
+    //     })
+    //         }, [])
+    //     )
+
     
-    if(!kroka){
+    if(!carObj.krooka){
         return 	<View style={styles.spinnerContener}>
                     <Animated.View style={{ ...styles.spinner , transform: [{rotate: spin} ] }}/>
                     <Text style={{ marginVertical:20 }}>جار التحقق من الحوادث</Text>
@@ -430,7 +460,7 @@ function checkout(props){
         الحوادث : 
     </Text>
         <Text style={{paddingHorizontal:10 , backgroundColor:'white' , padding:5 , flex:4 , textAlign:'right' , borderWidth:1}}>
-            {kroka}
+            {carObj.krooka}
         </Text>
 </View>
 
@@ -439,22 +469,21 @@ function checkout(props){
         التكــلفة : 
     </Text>
         <Text style={{paddingHorizontal:10 , backgroundColor:'white' , padding:5 , flex:4 , textAlign:'right' , borderWidth:1}}>
-            98 ديـــنار
+            {carObj.cost || ''} ديـــنار
         </Text>
 </View>
 
 </View>
 <View style={{ margin:10 }}>
 
-    <Button   title="التـــالي" onPress={()=> props.navigation.navigate({
-            name: 'checkout',
-            params: { carObj: props.route.params.carObj},
-        })} />
+    <Button   title="التـــالي" onPress={()=> store()} />
 </View>
 </ScrollView>
     }
     
 }
+
+
 
 export default function CreateTotalLoss(props){
 

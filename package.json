@@ -22,6 +22,7 @@
     "expo-status-bar": "~1.0.4",
     "firebase": "8.2.3",
     "https-proxy-agent": "^5.0.0",
+    "moment": "^2.29.1",
     "nanoid": "^3.1.25",
     "qs": "^6.10.1",
     "radio-buttons-react-native": "^1.0.4",

@@ -1,6 +1,6 @@
 import React, { useState , useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import axios from '../../axios'
+import axios from 'axios'
 import { ScrollView, Text , View , Image , AsyncStorage , Dimensions, Button, TouchableOpacity   } from 'react-native';
 import Card from './card';
 import reload from '../../img/reload.png'
@@ -27,10 +27,11 @@ export default function DailyPolicy(props){
 
 
     return <ScrollView style={{ padding:5 }}>
-         <View style={{ flex:1  , alignItems:'center' , justifyContent:'space-between'   , flexDirection:'row-reverse', padding:10, height:80 , borderColor:'black' , borderWidth:1 }}>
+         <View style={{ flex:1  , alignItems:'center' , justifyContent:'space-between'   , flexDirection:'row-reverse', padding:10, height:100 , borderColor:'black' , borderWidth:1 }}>
              <View  style={{ flexDirection:'column' , justifyContent:'flex-end'  }}>
-                <Text style={{ fontSize:18  }}>الاســــم : احمد عبد السميع</Text>
-                <Text style={{ fontSize:18  }}>المنطقة :مــــاركا</Text>
+                <Text style={{ fontSize:18  , textAlign:'right' }}>الاســــم : {props.user.name}</Text>
+                <Text style={{ fontSize:18  , textAlign:'right'  }}>المنطقة  :  {props.user.branch.name}</Text>
+                <Text style={{ fontSize:18  , textAlign:'right' }}>الرصيد  :  {props.user.branch.id}</Text>
              </View>
             <TouchableOpacity onPress={()=>setRefresh(c=>!c)}>
                 <Image style={{ width:50 , height:50}} source={reload} width={50} height={50}/>

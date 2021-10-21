@@ -5,10 +5,10 @@ import total_loss from '../../img/total-loss.png';
 import owner from '../../img/owner.png';
 import acce from '../../img/acce.png';
 import { useFocusEffect } from '@react-navigation/native';
-import axios from '../../axios'
+import axios from 'axios'
 
 
-export default function Home({ navigation }){
+export default function Home(props){
 
     const [data , setData] = useState([])
 
@@ -18,21 +18,24 @@ export default function Home({ navigation }){
 
     const getData = async ()=> {
         const data =  await axios.get(`http://92.253.102.198/api/get-policy`)
-        console.log(data.data)
+        // console.log(data.data)
         setData(data.data)
       }
 
 
 
-    useFocusEffect(useCallback(()=>{getData()}, [navigation]));
+    useFocusEffect(useCallback(()=>{getData()}, [props.navigation]));
 
     return(
         <ScrollView style={{ padding:5 }}>
-            <View style={{ flex:1  , justifyContent:'center' , padding:10, height:80 , borderColor:'black' , borderWidth:1 }}>
-                <Text style={{ fontSize:18 }}>الاســــم : احمد عبد السميع</Text>
-                <Text style={{ fontSize:18 }}>المنطقة :مــــاركا</Text>
+         <View style={{ flex:1  , alignItems:'center' , justifyContent:'space-between'   , flexDirection:'row-reverse', padding:10, height:100 , borderColor:'black' , borderWidth:1 }}>
+             <View  style={{ flexDirection:'column' , justifyContent:'flex-end'  }}>
+                <Text style={{ fontSize:18  , textAlign:'right' }}>الاســــم : {props.user.name}</Text>
+                <Text style={{ fontSize:18  , textAlign:'right' }}>المنطقة  :  {props.user.branch.name}</Text>
+                <Text style={{ fontSize:18  , textAlign:'right' }}>الرصيد  :  {props.user.branch.id}</Text>
+             </View>
+        </View>
 
-            </View>
             <ScrollView horizontal={true}>
             <View style={{ ...styles.card , backgroundColor:'green' }}>
                 <Text style={{ fontSize:28 , color:'white'}}>
@@ -67,7 +70,7 @@ export default function Home({ navigation }){
                 </View>
             </View>
             <View style={{ flex:1  , marginVertical:5}}>
-                <TouchableOpacity onPress={ () => navigation.navigate('طلب خسارة كلية') }>
+                <TouchableOpacity onPress={ () => props.navigation.navigate('طلب خسارة كلية') }>
                     <ImageBackground source={total_loss} style={{ borderWidth:1 , borderColor:'black' , borderRadius:5  , height:250}}/>
                     <View style={{ justifyContent:'center' , alignItems:'center',position:'absolute' , bottom:0 , backgroundColor:'#000000c7' , width:'100%' , height:50 }}>
                         <Text style={{ fontSize:26 , fontWeight:'bold' , color:'teal' }}>طلب تأمين خسارة كلية</Text>

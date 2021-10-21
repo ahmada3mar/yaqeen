@@ -1,14 +1,11 @@
-import React, { useState , useCallback, useEffect } from 'react';
+import React, { useState , useEffect } from 'react';
 import { ScrollView, Text , View , StyleSheet , ImageBackground , Dimensions, Button, TouchableOpacity  , Animated , Easing, TextInput, Picker, Alert , AsyncStorage} from 'react-native';
-import full_cover from '../../img/full-cover.png'
 import RadioButtonRN from 'radio-buttons-react-native';
-import { useFocusEffect } from '@react-navigation/native';
-import { StackActions } from '@react-navigation/native';
 import { CommonActions } from '@react-navigation/native';
 import front_id from '../../img/front-card.png'
 import back_id from '../../img/back-card.png'
 import * as ImagePicker from 'expo-image-picker'
-import axios from '../../axios';
+import axios from 'axios';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -19,17 +16,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const AppStack = createNativeStackNavigator();
 
-const  _retrieveData = async () => {
-    try {
-      const value = await AsyncStorage.getItem('token');
-      if (value !== null) {
-        // We have data!!
-        return value
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
-}
 
 
 function Create(props){
@@ -200,11 +186,13 @@ function Create(props){
 
     return(
         <ScrollView style={{ padding:5 }}>
-            <View style={{ flex:1  , justifyContent:'center' , padding:10, height:80 , borderColor:'black' , borderWidth:1 }}>
-                <Text style={{ fontSize:18  }}>الاســــم : احمد عبد السميع</Text>
-                <Text style={{ fontSize:18  }}>المنطقة :مــــاركا</Text>
-
-            </View>
+         <View style={{ flex:1  , alignItems:'center' , justifyContent:'space-between'   , flexDirection:'row-reverse', padding:10, height:100 , borderColor:'black' , borderWidth:1 }}>
+             <View  style={{ flexDirection:'column' , justifyContent:'flex-end'  }}>
+                <Text style={{ fontSize:18   , textAlign:'right' }}>الاســــم : {props.user.name}</Text>
+                <Text style={{ fontSize:18   , textAlign:'right' }}>المنطقة  :  {props.user.branch.name}</Text>
+                <Text style={{ fontSize:18   , textAlign:'right' }}>الرصيد  :  {props.user.branch.id}</Text>
+             </View>
+        </View>
             <View style={{ flex:1  , marginVertical:5}}>
                 <RadioButtonRN
                     textStyle={{ width:'100%' , textAlign:'right' }}
@@ -251,11 +239,13 @@ function Next(props){
 
 
     return <ScrollView >
-            <View style={{ flex:1  , justifyContent:'center' , padding:10, height:80 , borderColor:'black' , borderWidth:1 }}>
-                <Text style={{ fontSize:18  }}>الاســــم : احمد عبد السميع</Text>
-                <Text style={{ fontSize:18  }}>المنطقة :مــــاركا</Text>
-
-            </View>
+         <View style={{ flex:1  , alignItems:'center' , justifyContent:'space-between'   , flexDirection:'row-reverse', padding:10, height:100 , borderColor:'black' , borderWidth:1 }}>
+             <View  style={{ flexDirection:'column' , justifyContent:'flex-end'  }}>
+                <Text style={{ fontSize:18  , textAlign:'right' }}>الاســــم : {props.user.name}</Text>
+                <Text style={{ fontSize:18  , textAlign:'right' }}>المنطقة  :  {props.user.branch.name}</Text>
+                <Text style={{ fontSize:18  , textAlign:'right' }}>الرصيد  :  {props.user.branch.id}</Text>
+             </View>
+        </View>
     	<View style={styles.result}>
     <View style={{ margin:5 , display:'flex' , flexDirection:'row-reverse'  }}>
         <Text style={styles.label}>
@@ -338,7 +328,7 @@ function Next(props){
 
 }
 
-function checkout(props){
+function Checkout(props){
 
     const [carObj , setCarObj] = useState(props.route.params.carObj || {})
 
@@ -412,10 +402,12 @@ function checkout(props){
                 </View>
     }else{
         return  <ScrollView >
-        <View style={{ flex:1  , justifyContent:'center' , padding:10, height:80 , borderColor:'black' , borderWidth:1 }}>
-            <Text style={{ fontSize:18  }}>الاســــم : احمد عبد السميع</Text>
-            <Text style={{ fontSize:18  }}>المنطقة :مــــاركا</Text>
-
+         <View style={{ flex:1  , alignItems:'center' , justifyContent:'space-between'   , flexDirection:'row-reverse', padding:10, height:100 , borderColor:'black' , borderWidth:1 }}>
+             <View  style={{ flexDirection:'column' , justifyContent:'flex-end'  }}>
+                <Text style={{ fontSize:18  , textAlign:'right' }}>الاســــم : {props.user.name}</Text>
+                <Text style={{ fontSize:18  , textAlign:'right' }}>المنطقة  :  {props.user.branch.name}</Text>
+                <Text style={{ fontSize:18  , textAlign:'right' }}>الرصيد  :  {props.user.branch.id}</Text>
+             </View>
         </View>
     <View style={styles.result}>
 <View style={{ margin:5 , display:'flex' , flexDirection:'row-reverse'  }}>
@@ -489,9 +481,9 @@ function checkout(props){
 export default function CreateTotalLoss(props){
 
   return <AppStack.Navigator initialRouteName="Drawer">
-            <AppStack.Screen name="Create" component={Create}   options={{ headerShown: false }}/>
-            <AppStack.Screen name="Next" component={Next}  options={{ headerShown: false }}/>
-            <AppStack.Screen name="checkout" component={checkout}  options={{ headerShown: false }}/>
+            <AppStack.Screen name="Create" children={(r)=><Create {...r} user={props.user} />}   options={{ headerShown: false }}/>
+            <AppStack.Screen name="Next" children={(r)=> <Next {...r} user={props.user} />}  options={{ headerShown: false }}/>
+            <AppStack.Screen name="checkout" children={(r)=> <Checkout {...r} user={props.user} />}  options={{ headerShown: false }}/>
         </AppStack.Navigator>
 }
 

@@ -13,7 +13,7 @@ import axios from 'axios';
 
 
 function Logout(props) {
-  axios.get('http://92.253.102.198/logout').then(res => res.data == 'succsess' &&  props.setUser(false)  )
+  axios.get('http://192.168.1.65/logout').then(res => res.data == 'succsess' &&  props.setUser(false)  )
   return null
 }
 
@@ -41,26 +41,11 @@ export default function App() {
     }
   };
 
- const  _retrieveData = async () => {
-    try {
-      const value = await AsyncStorage.getItem('token');
-      if (value !== null) {
-        // We have data!!
-          axios.get(`http://92.253.102.198/login-web` , { headers:{authorization:`Bearer ${value}`}} )
-          .then(res=>{
-            if(res.data.id){
-              setUser(res.data)
-            }
-          })
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
-  };
+
   
   const login = async ()=>{
 
-    const res = await  axios.get(`http://92.253.102.198/login-web?email=${'ahmada3mar@gmail.com'}&password=123456789` , {withCredentials: true} )
+    const res = await  axios.get(`http://192.168.1.65/login-web?email=${'ahmada3mar@gmail.com'}&password=123456789` )
     console.log(res.data)
     if(res.data[0].id){
       setUser(res.data)
@@ -71,7 +56,13 @@ export default function App() {
   React.useEffect( ()=>{
     Permissions.requestCameraPermissionsAsync();
 
-    _retrieveData()
+    axios.get(`http://192.168.1.65/login-web`  )
+    .then(res=>{
+      if(res.data.id){
+        setUser(res.data)
+      }
+    })
+
 } , [])
 
 

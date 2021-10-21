@@ -1,16 +1,7 @@
-import React, { useState , useCallback, useEffect } from 'react';
-import { ScrollView, Text , View , Image , AsyncStorage , Dimensions, Button, TouchableOpacity  , Animated , Easing, TextInput, Picker, Alert} from 'react-native';
-import full_cover from '../../img/full-cover.png'
-import RadioButtonRN from 'radio-buttons-react-native';
+import React, { useState , useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { StackActions } from '@react-navigation/native';
-import { CommonActions } from '@react-navigation/native';
-import front_id from '../../img/front-card.png'
-import back_id from '../../img/back-card.png'
-import * as ImagePicker from 'expo-image-picker'
-import axios from 'axios';
-import * as ImageManipulator from 'expo-image-manipulator';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import axios from '../../axios'
+import { ScrollView, Text , View , Image , AsyncStorage , Dimensions, Button, TouchableOpacity   } from 'react-native';
 import Card from './card';
 import reload from '../../img/reload.png'
 
@@ -21,21 +12,10 @@ export default function DailyPolicy(props){
     const [data , setData] = useState([])
     const [refresh , setRefresh] = useState(false)
 
-    const  _retrieveData = async () => {
-        try {
-          const value = await AsyncStorage.getItem('token');
-          if (value !== null) {
-            // We have data!!
-            return value
-          }
-        } catch (error) {
-          // Error retrieving data
-        }
-      };
+      
 
          const getData = async ()=> {
-          const token = await _retrieveData()
-          const data =  await axios.get(`http://92.253.102.198/api/get-policy` , { headers:{authorization:`Bearer ${token}`}})
+          const data =  await axios.get(`http://192.168.1.65/api/get-policy`)
           console.log(data.data)
           setData(data.data)
         }

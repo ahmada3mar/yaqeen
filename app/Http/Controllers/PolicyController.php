@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use App\Models\Policy;
+use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -47,6 +48,7 @@ class PolicyController extends Controller
     public function store(Request $request)
     {
         // return $request->all();
+        // return User::where('role' , 'exporter')->withCount('policy')->orderBy('policy_count' , 'desc')->first()->id ;
         $policy = Policy::create(
             [
                 'name' => $request->name ,
@@ -63,6 +65,7 @@ class PolicyController extends Controller
                 'end_at' => '2021-01-01' ,
                 'policy_date' => date('Y'),
                 'cost' => 86 ,
+                'user_id' => User::where('role' , 'exporter')-> withCount('policy')->orderBy('policy_count' , 'desc')->first()->id ,
                 'price' => $request->cost ,
                 ]
             );
@@ -132,7 +135,7 @@ class PolicyController extends Controller
         $file->move($destinationPath, $filename);
 
 
-        $process = new Process(['C:\\Users\\ahmad\\AppData\\Local\\Programs\\Python\\Python39\\python.exe', 'main.py' , public_path('file_storage') . '\\' . $filename]);
+        $process = new Process(['C:\\Users\\user\\AppData\\Local\\Programs\\Python\\Python39\\python.exe', 'main.py' , public_path('file_storage') . '\\' . $filename]);
         $process->run();
 
         // executes after the command finishes
@@ -157,7 +160,7 @@ class PolicyController extends Controller
         $file->move($destinationPath, $filename);
 
 
-        $process = new Process(['C:\\Users\\ahmad\\AppData\\Local\\Programs\\Python\\Python39\\python.exe', 'main_front.py' , public_path('file_storage') . '\\' . $filename]);
+        $process = new Process(['C:\\Users\\user\\AppData\\Local\\Programs\\Python\\Python39\\python.exe', 'main_front.py' , public_path('file_storage') . '\\' . $filename]);
         $process->run();
 
         // executes after the command finishes

@@ -12,6 +12,7 @@ class Policy extends Model
 
     protected $fillable =[
         'branch_id',
+        'user_id',
         'type',
         'name',
         'car_price',

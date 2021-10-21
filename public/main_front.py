@@ -15,9 +15,9 @@ else :
     exit()
 
 # print (str(receved_img))
-pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 
-imgQ = cv2.imread('F:\\Yaqeen\\public\\model_front.jpeg')
+imgQ = cv2.imread('E:\\Yaqeen\\public\\model_front.jpeg')
 h,w , c = imgQ.shape
 roi = [[(776, 173), (340, 238), 'text', 'name'], [(449, 528), (76, 600), 'text', 'number']]
 
@@ -83,7 +83,7 @@ for x,r in enumerate(roi):
     if r[3] == 'number' :
         data = pytesseract. image_to_string(imgCrop , 'eng' , config='--psm 6 ')
     else:
-        data = pytesseract. image_to_string(imgCrop , 'ara',  config='--psm 7 ')
+        data = pytesseract. image_to_string(imgCrop , 'ara',  config="--psm 7 -c tessedit_char_blacklist='-_.|0123456789/\*+$%^#@![]'")
     # data = data. replace(' ' , '' )
     # data = data. replace('\n' , '' )
     # dataList = re.search(r'[^OIQ]{11}[0-9]{6}',data) # split the string

@@ -121,12 +121,12 @@ class LoginController extends Controller
     {
         // return $request->all() ;
         if(Auth::user()){
-            return Auth::user();
+            return Auth::user()->with('branch')->first();
         }
 
         if (Auth::attempt($request->all())) {
             $request->session()->regenerate();
-            $user = Auth::user();
+            $user = Auth::user()->with('branch')->first();
             return [$user , $user->createToken('yaqeenToken')->plainTextToken];
         }else{
             return 'faild';

@@ -12,9 +12,9 @@ else :
     print('plase add image path first')
     exit()
 
-pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 
-imgQ = cv2.imread('F:\\Yaqeen\\public\\model.jpeg')
+imgQ = cv2.imread('E:\\Yaqeen\\public\\model.jpeg')
 h,w , c = imgQ.shape
 
 roi = [[(980, 275), (460, 405), 'text', 'both']]
@@ -76,7 +76,7 @@ for x,r in enumerate(roi):
         #         cv2.THRESH_BINARY,15,15)
         gray=cv2.medianBlur(gray,3)
 
-        data = pytesseract. image_to_string(gray , 'eng' , r'--oem 3  -c tessedit_char_blacklist=QOIqoi-.~ ')
+        data = pytesseract. image_to_string(gray , 'eng' , config="--psm 4  -c tessedit_char_blacklist='QIO.'")
         # cv2.imshow(str(x) , gray)
 
         data = data. replace(' ' , '' )

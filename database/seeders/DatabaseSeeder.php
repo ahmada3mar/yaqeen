@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'password' =>  bcrypt('123456789'),
             'branch_id' =>1,
+            'role' =>'exporter',
             'username' => 'ahmada3mar'
         ]);
     }

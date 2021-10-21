@@ -41,6 +41,7 @@ class PolicyController extends Controller
 
     public function store(Request $request)
     {
+        // return $request->all();
         $policy = Policy::create(
             [
                 'name' => $request->name ,

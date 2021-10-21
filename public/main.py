@@ -12,9 +12,9 @@ else :
     print('plase add image path first')
     exit()
 
-pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 
-imgQ = cv2.imread('F:\\Yaqeen\\public\\model.jpeg')
+imgQ = cv2.imread('D:\\Yaqeen\\web\\public\\model.jpeg')
 h,w , c = imgQ.shape
 
 roi = [[(980, 275), (460, 405), 'text', 'both']]

@@ -124,7 +124,7 @@ class LoginController extends Controller
         $file->move($destinationPath, $filename);
 
 
-        $process = new Process(['C:\\Users\\user\\AppData\\Local\\Programs\\Python\\Python39\\python.exe', 'main.py' , public_path('file_storage') . '\\' . $filename]);
+        $process = new Process(['C:\\Users\\ahmad\\AppData\\Local\\Programs\\Python\\Python39\\python.exe', 'main.py' , public_path('file_storage') . '\\' . $filename]);
         $process->run();
 
         // executes after the command finishes
@@ -149,7 +149,7 @@ class LoginController extends Controller
         $file->move($destinationPath, $filename);
 
 
-        $process = new Process(['C:\\Users\\user\\AppData\\Local\\Programs\\Python\\Python39\\python.exe', 'main_front.py' , public_path('file_storage') . '\\' . $filename]);
+        $process = new Process(['C:\\Users\\ahmad\\AppData\\Local\\Programs\\Python\\Python39\\python.exe', 'main_front.py' , public_path('file_storage') . '\\' . $filename]);
         $process->run();
 
         // executes after the command finishes

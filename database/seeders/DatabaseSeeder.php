@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'احمد عبد السميع',
             'email_verified_at' => now(),
             'password' =>  bcrypt('123456789'),
+            'branch_id' =>1,
+            'username' => 'ahmada3mar'
         ]);
     }
 }

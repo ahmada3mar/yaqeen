@@ -18,14 +18,14 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('/login', 'LoginController@login');
+Route::get('/login', 'LoginController@login');
 
 Route::group(['middleware' => 'auth:sanctum'] , function(){
 
 
-Route::post('/BackID', 'LoginController@BackID');
-Route::post('/FrontID', 'LoginController@FrontID');
-Route::post('/checkKroka', 'LoginController@checkKroka');
+Route::post('/BackID', 'PolicyController@BackID');
+Route::post('/FrontID', 'PolicyController@FrontID');
+Route::post('/checkKroka', 'PolicyController@checkKroka');
 
 // CRUD
 Route::post('/store-policy', 'PolicyController@store');

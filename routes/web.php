@@ -28,5 +28,5 @@ Route::get('/branches/create', 'BranchController@create')->name('create-branches
 Route::get('/branches/store', 'BranchController@store')->name('store-branches');
 Route::get('/branches/{branch}', 'BranchController@edit')->name('edit-branches');
 Route::get('/privacy', 'BranchController@privacy');
-Route::get('/login-web', 'LoginController@login')->name('login');
+Route::get('/login-web', 'LoginController@index')->name('login');
 Route::get('/logout', 'LoginController@logout')->name('logout');

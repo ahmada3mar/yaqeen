@@ -4,6 +4,8 @@ import axios from '../../axios'
 import { ScrollView, Text , View , Image , AsyncStorage , Dimensions, Button, TouchableOpacity   } from 'react-native';
 import Card from './card';
 import reload from '../../img/reload.png'
+import CodePush from 'react-native-code-push';
+
 
 
 
@@ -15,8 +17,7 @@ export default function DailyPolicy(props){
       
 
          const getData = async ()=> {
-          const data =  await axios.get(`http://192.168.1.65/api/get-policy`)
-          console.log(data.data)
+          const data =  await axios.get(`http://192.168.1.65/api/get-policy`).catch(err =>  CodePush.restartApp())
           setData(data.data)
         }
 

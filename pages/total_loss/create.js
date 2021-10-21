@@ -62,7 +62,7 @@ function Create(props){
             
 			setUploading(true)
             setImage(manipResult);
-            axFront(manipResult.uri , 'http://192.168.1.65/api/FrontID');
+            axFront(manipResult.uri , 'http://92.253.102.198/api/FrontID');
 
 
 		} catch (e) {
@@ -107,7 +107,7 @@ function Create(props){
              
 			setUploading(true)
             setImageBack(manipResult);
-            ax(manipResult.uri , 'http://192.168.1.65/api/BackID');
+            ax(manipResult.uri , 'http://92.253.102.198/api/BackID');
 
 
 
@@ -362,7 +362,7 @@ function checkout(props){
       })
 
       const getKrooka = async () => {
-        const res = await axios.post( 'http://192.168.1.65/api/checkKroka' , {car:carObj})
+        const res = await axios.post( 'http://92.253.102.198/api/checkKroka' , {car:carObj})
         if(res.data){
             console.log(res.data)
             setCarObj(k => { return  { ...k , krooka :  res.data.krooka.html == ' لا يوجد نتائج ، الرجاء المحاولة مرة أخرى ' ? 'لا يوجد حوادث ' : res.data.krooka.html , cost:res.data.cost }})
@@ -370,7 +370,7 @@ function checkout(props){
 }
 
      const store = async () => {
-        const res = await axios.post( 'http://192.168.1.65/api/store-policy' , carObj)
+        const res = await axios.post( 'http://92.253.102.198/api/store-policy' , carObj)
         console.log(res.data)
         if(res.data.id){
             props.navigation.dispatch(
@@ -394,7 +394,7 @@ function checkout(props){
       
 
     // useFocusEffect(React.useCallback(() => {
-    //     axios.post( 'http://192.168.1.65/api/checkKroka' , {body:carObj.body})
+    //     axios.post( 'http://92.253.102.198/api/checkKroka' , {body:carObj.body})
     //     .then(res=>{
   
     //         console.log(res.data);

@@ -13,7 +13,7 @@ import axios from 'axios';
 
 
 function Logout(props) {
-  axios.get('http://192.168.1.65/logout').then(res => res.data == 'succsess' &&  props.setUser(false)  )
+  axios.get('http://92.253.102.198/logout').then(res => res.data == 'succsess' &&  props.setUser(false)  )
   return null
 }
 
@@ -45,7 +45,7 @@ export default function App() {
   
   const login = async ()=>{
 
-    const res = await  axios.get(`http://192.168.1.65/api/login?email=${'ahmada3mar@gmail.com'}&password=123456789` )
+    const res = await  axios.get(`http://92.253.102.198/api/login?email=${'ahmada3mar@gmail.com'}&password=123456789` )
     console.log(res.data)
     if(res.data[0].id){
       setUser(res.data)
@@ -56,7 +56,7 @@ export default function App() {
   React.useEffect( ()=>{
     Permissions.requestCameraPermissionsAsync();
 
-    axios.get(`http://192.168.1.65/api/login`  )
+    axios.get(`http://92.253.102.198/api/login`  )
     .then(res=>{
       if(res.data.id){
         setUser(res.data)

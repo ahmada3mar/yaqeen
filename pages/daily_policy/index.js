@@ -17,11 +17,11 @@ export default function DailyPolicy(props){
       
 
          const getData = async ()=> {
-          const data =  await axios.get(`http://192.168.1.65/api/get-policy`).catch(err =>  CodePush.restartApp())
+          const data =  await axios.get(`http://92.253.102.198/api/get-policy`).catch(err =>  CodePush.restartApp())
           setData(data.data)
         }
 
-       const ploicy = data.map(i => <Card created_at={i.created_at} car_name={i.car_name} key={i.id} name={i.name} type={i.type} status={i.status} />)
+       const ploicy = data.map(i => <Card price={i.price} created_at={i.created_at} car_name={i.car_name} key={i.id} name={i.name} type={i.type} status={i.status} />)
        
        useFocusEffect(useCallback(()=>{getData()}, [refresh]));
 

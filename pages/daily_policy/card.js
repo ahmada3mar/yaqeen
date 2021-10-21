@@ -39,7 +39,7 @@ export default function Card(props){
                     التكلفة
                 </Text>
                 <Text style={styles.data}>
-                        100 دينار
+                        {props.price} دينار
                 </Text>
             </View>
             <View style={styles.container}>

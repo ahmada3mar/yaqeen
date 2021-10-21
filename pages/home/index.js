@@ -17,7 +17,7 @@ export default function Home({ navigation }){
     const debit  = approve.reduce((i , x)=> i + x.price , 0)
 
     const getData = async ()=> {
-        const data =  await axios.get(`http://192.168.1.65/api/get-policy`)
+        const data =  await axios.get(`http://92.253.102.198/api/get-policy`)
         console.log(data.data)
         setData(data.data)
       }

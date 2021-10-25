@@ -19,7 +19,7 @@ Route::get('/portal', 'LoginController@portal')->name('portal');
 
 # policy
 Route::get('/policy', 'PolicyController@index')->name('policy');
-Route::get('/krooka', 'PolicyController@krooka');
+Route::get('/krooka', 'PolicyController@krooka')->name('krooka');
 Route::post('/getkrooka', 'PolicyController@getkrooka')->name('getkrooka');
 Route::get('/pending-policy', 'PolicyController@pending')->name('pending-policy');
 Route::get('/create-policy', 'PolicyController@create')->name('create-policy');

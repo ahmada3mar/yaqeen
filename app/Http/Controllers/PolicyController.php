@@ -80,56 +80,60 @@ class PolicyController extends Controller
 
     public function krooka(Request $request)
     {
-        $res = null ;
-        // return $request();
-                // return $request->body;
 
-
-        return view('admin.krooka.index' , compact('res'));
+        return view('admin.krooka.index' );
     }
     public function getkrooka(Request $request)
     {
+        $request->validate([
+            'ter' => 'required_without_all:reg,num,body',
+            'reg' => 'required_without_all:ter,num,body',
+            'num' => 'required_without_all:ter,reg,body',
+            'body' => 'required_without_all:ter,num,reg',
+        ] , [
+            'required_without_all'=> 'يرجى تعبة حقل واحد على الاقل'
+        ]);
+
         $res = null ;
-        // return $request();
-                // return $request->body;
-                $client = new Client(['base_uri' => 'http://192.168.20.22/' , 'cookies' => true]);
-                $response = $client->get( 'krooka/login.aspx?&d=1632004121646&UN=issakh&P=0000');
 
-                $data = [
-                    'd' => '1632000500211' ,
-                    'VehNat' => '1' ,
-                    'PlateNoT' => '0' ,
-                    'PlateNo' => '' ,
-                    'RegNo' => $request->name ,
-                    'ShasiNo' => '',
-                    'AccDateFromVar' => '' ,
-                    'AccDateToVar' => '' ,
-                    'EngineNo' => '' ,
-                    'VehCat' => '0' ,
-                    'VehType' => '0' ,
-                    'VehStatus' => '0' ,
-                    'VehOwnNameFirst' => '' ,
-                    'VehOwnNameFather' => '' ,
-                    'VehOwnNameGrand' => '' ,
-                    'VehOwnNameFamily' => '' ,
-                    'OwnerType' => '0' ,
-                    'varResp' => '1' ,
-                ];
+        $client = new Client(['base_uri' => 'http://192.168.20.22/' , 'cookies' => true]);
+        $response = $client->get( 'krooka/login.aspx?&d=1632004121646&UN=issakh&P=0000');
 
-                $query = Arr::query($data);
+        $data = [
+            'd' => '1632000500211' ,
+            'VehNat' => '1' ,
+            'PlateNoT' =>  $request->ter ?? '0' ,
+            'PlateNo' =>  $request->num ?? '' ,
+            'RegNo' => $request->reg ?? '' ,
+            'ShasiNo' =>  $request->body ?? '',
+            'AccDateFromVar' => '' ,
+            'AccDateToVar' => '' ,
+            'EngineNo' => '' ,
+            'VehCat' => '0' ,
+            'VehType' => '0' ,
+            'VehStatus' => '0' ,
+            'VehOwnNameFirst' => '' ,
+            'VehOwnNameFather' => '' ,
+            'VehOwnNameGrand' => '' ,
+            'VehOwnNameFamily' => '' ,
+            'OwnerType' => '0' ,
+            'varResp' => '0' ,
+        ];
 
-                // dd($query);
+        $query = Arr::query($data);
 
-                $response2 = $client->request('GET', "krooka/Search/SearchResultVehicle.aspx?&$query" );
-                $client->request('GET', 'krooka/logout.aspx');
+        // dd($query);
 
-
-                $cc = $response2->getBody()->getContents() ;
-
-                // $res = $this->html_to_obj($cc);
+        $response2 = $client->request('GET', "krooka/Search/SearchResultVehicle.aspx?&$query" );
+        $client->request('GET', 'krooka/logout.aspx');
 
 
-        return view('admin.krooka.index' , compact('cc'));
+        $cc = $response2->getBody()->getContents() ;
+        $res = $this->html_to_obj($cc);
+
+
+
+        return back()->with(['krooka' => $res])->withInput();
     }
 
     /**
@@ -236,7 +240,7 @@ class PolicyController extends Controller
         $dom = new \DOMDocument();
         $dom->loadHTML(mb_convert_encoding($html , 'HTML-ENTITIES', 'UTF-8'));
         // dd($dom);
-        return $this->element_to_obj( $dom->getElementById('lblResults') ?? $dom->getElementById('lblerr')  );
+        return $this->element_to_obj( $dom->getElementById('GridSearchResult') ?? $dom->getElementById('lblerr')  );
     }
 
     function element_to_obj( $element ) {
@@ -288,7 +292,7 @@ class PolicyController extends Controller
             'VehOwnNameGrand' => '' ,
             'VehOwnNameFamily' => '' ,
             'OwnerType' => '0' ,
-            'varResp' => '1' ,
+            'varResp' => '0' ,
         ];
 
         $query = Arr::query($data);

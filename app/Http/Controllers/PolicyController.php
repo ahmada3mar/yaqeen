@@ -117,7 +117,7 @@ class PolicyController extends Controller
             'VehOwnNameGrand' => '' ,
             'VehOwnNameFamily' => '' ,
             'OwnerType' => '0' ,
-            'varResp' => '0' ,
+            'varResp' => '1' ,
         ];
 
         $query = Arr::query($data);
@@ -240,7 +240,7 @@ class PolicyController extends Controller
         $dom = new \DOMDocument();
         $dom->loadHTML(mb_convert_encoding($html , 'HTML-ENTITIES', 'UTF-8'));
         // dd($dom);
-        return $this->element_to_obj( $dom->getElementById('GridSearchResult') ?? $dom->getElementById('lblerr')  );
+        return $this->element_to_obj( $dom->getElementById('GridSearchResult') ?? $dom->getElementById('lblerr') ??  $dom->getElementById('lblResults') );
     }
 
     function element_to_obj( $element ) {

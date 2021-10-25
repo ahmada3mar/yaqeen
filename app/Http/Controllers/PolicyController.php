@@ -126,10 +126,10 @@ class PolicyController extends Controller
 
                 $cc = $response2->getBody()->getContents() ;
 
-                $res = $this->html_to_obj($cc);
+                // $res = $this->html_to_obj($cc);
 
 
-        return view('admin.krooka.index' , compact('res'));
+        return view('admin.krooka.index' , compact('cc'));
     }
 
     /**

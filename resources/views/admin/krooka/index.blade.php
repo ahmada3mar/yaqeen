@@ -22,15 +22,15 @@
                     @endif
                 </div>
 
-                @if($res)
+                @if($cc)
                     <div class="form-group row">
-                        {!! $res !!}
+                        {!! $cc !!}
                     </div>
                 @endif
                 <div class="ln_solid"></div>
                 <div class="form-group row">
                     <div class="col-9 col-md-offset-3">
-                        <button type="submit" class="btn btn-success">اضافة</button>
+                        <button type="submit" class="btn btn-success">استعلام</button>
                         <button class="btn btn-primary" type="reset">افراغ الحقول</button>
                         <a class="btn btn-primary" href="{{ route('branches') }}">الغاء</a>
                     </div>

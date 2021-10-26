@@ -116,13 +116,14 @@ function Create(props){
         
         axios.post( link , data2)
         .then(res=>{
-            if(res.data[0]){
-                setCarObj(c=>{return {...c , body: res.data[0]}})
-            }
-            if(res.data[1]){
-                setCarObj(c=>{return {...c , eng: res.data[1]}})
-            }
+            
+            setCarObj(c=>{return {...c , body: res.data.body}})
+    
+            setCarObj(c=>{return {...c , eng: res.data.eng}})
+            setCarObj(c=>{return {...c , back_id: res.data.path}})
+            
             console.log(res.data);
+ 
         })
     }
 
@@ -139,6 +140,7 @@ function Create(props){
         .then(res=>{
             let name = res.data.filter(i=> i.type == 'name')
             let number = res.data.filter(i=> i.type == 'number')
+            let path = res.data.filter(i=> i.type == 'path')
 
             if(name[0]){
                 setCarObj(c=>{return {...c , name: name[0].value}})
@@ -146,6 +148,10 @@ function Create(props){
             
             if(number[0]){
                 setCarObj(c=>{return {...c , number: number[0].value}})
+            }
+
+            if(path[0]){
+                setCarObj(c=>{return {...c , front_id: path[0].value}})
             }
             console.log(res.data);
         })
@@ -355,7 +361,7 @@ function Checkout(props){
         const res = await axios.post( 'http://92.253.102.198/api/checkKroka' , {car:carObj})
         if(res.data){
             console.log(res.data)
-            setCarObj(k => { return  { ...k , krooka :  res.data.krooka.html == ' لا يوجد نتائج ، الرجاء المحاولة مرة أخرى ' ? 'لا يوجد حوادث ' : res.data.krooka.html , cost:res.data.cost }})
+            setCarObj(k => { return  { ...k , krooka : [' لا يوجد نتائج ، الرجاء المحاولة مرة أخرى ' , ' نتيجة البحث : 0 تطابق '].includes(res.data.krooka.html)  ? 'لا يوجد حوادث ' : res.data.krooka.children.length -1 , cost:res.data.cost }})
         }
 }
 

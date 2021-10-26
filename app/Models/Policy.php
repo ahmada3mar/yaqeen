@@ -28,9 +28,27 @@ class Policy extends Model
         'policy_number',
         'cost',
         'price',
+        'front_id',
+        'back_id',
         'status',
     ];
 
+    public static $types = [
+        1 => 'خسارة كلية' ,
+        2 => 'شامل' ,
+        3 => 'نقل ملكية' ,
+    ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
 
 
 }

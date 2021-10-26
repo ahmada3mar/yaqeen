@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,22 +14,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/portal', 'LoginController@portal')->name('portal');
 // Route::get('/500', 'LoginController@throError')->name('portal');
 // Route::get('/{id}', 'LoginController@index')->name('login');
+Auth::routes();
 
+Route::group(['middleware' => 'auth'] , function(){
+Route::get('/', 'PortalController@index')->name('portal');
 # policy
 Route::get('/policy', 'PolicyController@index')->name('policy');
 Route::get('/krooka', 'PolicyController@krooka')->name('krooka');
 Route::post('/getkrooka', 'PolicyController@getkrooka')->name('getkrooka');
 Route::get('/pending-policy', 'PolicyController@pending')->name('pending-policy');
+Route::get('/policy/{policy}', 'PolicyController@edit')->name('edit-policy');
 Route::get('/create-policy', 'PolicyController@create')->name('create-policy');
-Route::post('/store-policy', 'PolicyController@store')->name('create-policy');
+Route::post('/store-policy', 'PolicyController@store')->name('store-policy');
 ## branches
 Route::get('/branches', 'BranchController@index')->name('branches');
 Route::get('/branches/create', 'BranchController@create')->name('create-branches');
 Route::get('/branches/store', 'BranchController@store')->name('store-branches');
 Route::get('/branches/{branch}', 'BranchController@edit')->name('edit-branches');
 Route::get('/privacy', 'BranchController@privacy');
-Route::get('/login-web', 'LoginController@index')->name('login');
-Route::get('/logout', 'LoginController@logout')->name('logout');
+Route::get('/logout', 'Api\ApiLoginController@logout')->name('logout');
+});

@@ -41,9 +41,6 @@
                                             <th scope="col">نوع التامين</th>
                                             <th scope="col">قيمة التعويض</th>
                                             <th scope="col">الفرع</th>
-                                            <th scope="col">المُصدر</th>
-                                            <th scope="col">التكلفة</th>
-                                            <th scope="col">البيع</th>
                                             <th scope="col">التاريخ</th>
                                             <th scope="col">الاجراءات</th>
                                         </tr>
@@ -54,29 +51,12 @@
                                                 <th scope="row">1</th>
                                                 <td class="col-4">{{ $policy->name }}</td>
                                                 <td>{{ $policy->car_type }}</td>
-                                                <td>{{ $policy->inssurance_type }}</td>
-                                                <td>{{ $policy->coverage }}</td>
-                                                <td>{{ $policy->branch }}</td>
-                                                <td>{{ $policy->user }}</td>
-                                                <td>{{ $policy->cost }}</td>
-                                                <td>{{ $policy->price }}</td>
-                                                <td>{{ $policy->created_by }}</td>
+                                                <td>{{ \App\models\Policy::$types[$policy->type] }}</td>
+                                                <td>{{ $policy->car_price }}</td>
+                                                <td>{{ $policy->branch->name }}</td>
+                                                <td>{{ $policy->created_at->diffForHumans() }}</td>
                                                 <td>
-                                                    <ul class="nav ">
-                                                        <li class="dropdown">
-                                                            <a style="padding: 5px" href="#" class="dropdown-toggle"
-                                                                data-toggle="dropdown" role="button" aria-expanded="false"><i
-                                                                    class="fa fa-chevron-down"></i></a>
-                                                            <ul class="dropdown-menu" style="padding: 8px 5px" role="menu">
-                                                                <li><a href="{{ route('edit-branches', $branch->id) }}"> <i
-                                                                            class="fa fa-wrench"></i> تعديل</a>
-                                                                </li>
-                                                                <li><a style="color: rgb(212, 9, 9)" href="#"><i
-                                                                            class="fa fa-times"></i> حذف</a>
-                                                                </li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
+                                                    <a href="{{ route('edit-policy' , $policy->id) }}" class="btn btn-info">عرض المزيد</a>
                                                 </td>
                                             </tr>
                                         @empty

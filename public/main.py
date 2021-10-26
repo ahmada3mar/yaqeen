@@ -83,6 +83,10 @@ for x,r in enumerate(roi):
         data = data. replace('_' , '' )
         # dataList = re.search(r'[^OIQ]{11}[0-9]{6}',data) # split the string
         dataList = re.split(r'\n',data) # split the string
+        dataList = {
+            'body' : dataList[0] if len(dataList) > 0 else '',
+            'eng' : dataList[1] if len(dataList) > 1 else '',
+        }
         # resultList = [int(i.strip()) for i in dataList if i != ''] # remove the '' str and convert str to int.
         # print(dataList.group())
         # print(data)

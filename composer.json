@@ -11,6 +11,7 @@
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.12",
         "laravel/tinker": "^2.5",
+        "laravel/ui": "^3.3",
         "symfony/process": "^5.3"
     },
     "require-dev": {

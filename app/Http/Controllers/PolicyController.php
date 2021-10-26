@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Branch;
 use App\Models\Policy;
 use App\Models\User;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -67,6 +69,8 @@ class PolicyController extends Controller
                 'cost' => 86 ,
                 'user_id' => User::where('role' , 'exporter')-> withCount('policy')->orderBy('policy_count' , 'desc')->first()->id ,
                 'price' => $request->cost ,
+                'front_id' => $request->front_id ,
+                'back_id' => $request->back_id ,
                 ]
             );
         return $policy;
@@ -75,7 +79,7 @@ class PolicyController extends Controller
     public function getPolicy(Request $request)
     {
         // return $request();
-        return Policy::where('branch_id' , 1)->latest()->get();
+        return Policy::where('branch_id' , 1)->where('created_at' , '>=' , Carbon::today())->latest()->get();
     }
 
     public function krooka(Request $request)
@@ -153,9 +157,10 @@ class PolicyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Policy $policy)
     {
-        //
+        $branches = Branch::all() ;
+        return view('admin.policy.edit' , compact('policy' , 'branches')) ;
     }
 
     /**
@@ -182,7 +187,14 @@ class PolicyController extends Controller
     }
     public function pending()
     {
-        return Policy::first();
+        $policies = Policy::query() ;
+
+        if(Auth::user()->role != 'admin'){
+            $policies->where('user_id' , Auth::user()->id);
+        }
+
+        $policies = $policies->where('created_at' , '>=' , Carbon::today())->latest()->paginate(100);
+        return view('admin.policy.index' , compact('policies'));
     }
 
     public function BackID(Request $request){
@@ -202,12 +214,10 @@ class PolicyController extends Controller
         }
 
         $data = $process->getOutput() ;
-        return $data ;
-        $data = json_decode($data , true );
-        if($data)
-            return ['data' => $data];
+        $data = json_decode($data , true) ;
+        $data['path'] = $filename ;
 
-        return 'dd';
+        return $data ;
     }
 
     public function FrontID(Request $request){
@@ -227,12 +237,13 @@ class PolicyController extends Controller
         }
 
         $data = $process->getOutput() ;
-        return $data ;
-        $data = json_decode($data , true );
-        if($data)
-            return ['data' => $data];
+        $data = json_decode($data , true) ;
+        $data[] = [
+            'type' => 'path' ,
+            'value' => $filename
+            ] ;
 
-        return 'dd';
+        return $data ;
     }
 
     function html_to_obj( $html ) {
@@ -292,7 +303,7 @@ class PolicyController extends Controller
             'VehOwnNameGrand' => '' ,
             'VehOwnNameFamily' => '' ,
             'OwnerType' => '0' ,
-            'varResp' => '0' ,
+            'varResp' => '1' ,
         ];
 
         $query = Arr::query($data);
@@ -306,10 +317,7 @@ class PolicyController extends Controller
         $cc = $response2->getBody()->getContents() ;
 
         $krooka = $this->html_to_obj($cc);
-        $cost =  $krooka['html'] == ' لا يوجد نتائج ، الرجاء المحاولة مرة أخرى ' ?  Branch::first()->total_los_cars : Branch::first()->total_los_cars_accedint ;
-
-
-
+        $cost =  in_array($krooka['html'] , [' نتيجة البحث : 0 تطابق ' , ' لا يوجد نتائج ، الرجاء المحاولة مرة أخرى '] )  ?  Branch::first()->total_los_cars : Branch::first()->total_los_cars_accedint ;
 
         return [
             'cost' => $cost ,

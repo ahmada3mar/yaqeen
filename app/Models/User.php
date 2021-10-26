@@ -28,6 +28,13 @@ class User extends Authenticatable
         'password',
     ];
 
+    public static $admins = [
+        'exporter',
+        'accounting',
+        'employee',
+        'admin',
+    ];
+
     /**
      * The attributes that should be hidden for arrays.
      *

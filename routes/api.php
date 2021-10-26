@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get('/login', 'LoginController@login');
+Route::get('/login', 'Api\ApiLoginController@loginAPI');
 
 Route::group(['middleware' => 'auth:sanctum'] , function(){
 

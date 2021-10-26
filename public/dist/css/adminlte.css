@@ -484,8 +484,8 @@ mark,
 
 .img-thumbnail {
   padding: 0.25rem;
-  background-color: #fff;
-  border: 1px solid #dee2e6;
+  background-color: rgb(78, 78, 78);
+  border: 1px solid #161616;
   border-radius: 0.25rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);
   max-width: 100%;
@@ -493,9 +493,12 @@ mark,
 }
 
 .figure {
-  display: inline-block;
+  display: inline-block !important;
 }
 
+.cursor-pointe{
+    cursor: pointer;
+}
 .figure-img {
   margin-bottom: 0.5rem;
   line-height: 1;

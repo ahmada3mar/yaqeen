@@ -13,7 +13,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 class LoginController extends Controller
 {
 
-    public function index($id){
+    public function index(){
 
     // return base_path();
         // $process = new Process(['C:\Users\User\AppData\Local\Programs\Python\Python39\python.exe' , 'main.py' , "F:\\Python\\POC\\$id.jpeg"]);

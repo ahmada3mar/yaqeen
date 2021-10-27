@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Branch;
 use App\Models\Car;
 use App\Models\Policy;
+use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -171,9 +173,9 @@ class PolicyController extends Controller
      */
     public function edit(Policy $policy)
     {
-        $branches = Branch::all() ;
         $cars = Car::all() ;
-        return view('admin.policy.edit' , compact('policy' , 'branches' , 'cars')) ;
+        $accounts = Account::all() ;
+        return view('admin.policy.edit' , compact('policy'  , 'cars' , 'accounts')) ;
     }
 
     /**
@@ -192,9 +194,10 @@ class PolicyController extends Controller
         }
 
        $data = $request->validate([
-            'name' => 'required|string',
+            'name' => 'required|string|regex:/^([^0-9]*)$/',
             'type' => "required|string|in:1,2,3",
             'car_price' => 'required|numeric',
+            'account_id' => 'required|numeric|exists:accounts,id',
             'car_type' => 'required|string',
             'car_number' => 'required|string',
             'car_name' => 'required|string',
@@ -223,6 +226,26 @@ class PolicyController extends Controller
         $policy->status = $data['status'] ;
 
         $policy->save();
+
+        if($data['status'] == 1 && !$policy->transaction){
+            $p_type = Policy::$types[$policy->type] ;
+            Transaction::create([
+                'description' => "بدل اصدار بوليصة تامين $p_type رقم عقد $data[policy_date]/$data[policy_number]" ,
+                'type' => "Debit" ,
+                'branch_id' => $policy->branch_id ,
+                'user_id' => $policy->user_id ,
+                'policy_id' => $policy->id ,
+                'amount' => $policy->price ,
+            ]);
+
+            Transaction::create([
+                'description' => "بدل اصدار بوليصة تامين $p_type رقم عقد $data[policy_date]/$data[policy_number]" ,
+                'type' => "Credit" ,
+                'user_id' => $policy->user_id ,
+                'account_id' => $policy->account_id,
+                'amount' => $policy->cost ,
+            ]);
+        }
 
         return redirect(route('policy'))->with('CRUD' , 'تم الاصدار بنجاح');
     }

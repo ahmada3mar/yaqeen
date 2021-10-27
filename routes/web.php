@@ -31,6 +31,8 @@ Route::post('/store-policy', 'PolicyController@store')->name('store-policy');
 Route::post('/{policy}/update-policy', 'PolicyController@update')->name('update-policy');
 ## branches
 Route::get('/branches', 'BranchController@index')->name('branches');
+Route::get('/users', 'BranchController@index')->name('users');
+Route::get('/accounts', 'BranchController@index')->name('accounts');
 Route::get('/branches/create', 'BranchController@create')->name('create-branches');
 Route::get('/branches/store', 'BranchController@store')->name('store-branches');
 Route::get('/branches/{branch}', 'BranchController@edit')->name('edit-branches');

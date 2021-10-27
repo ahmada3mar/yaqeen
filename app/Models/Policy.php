@@ -50,5 +50,10 @@ class Policy extends Model
         return $this->belongsTo(Branch::class);
     }
 
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class);
+    }
+
 
 }

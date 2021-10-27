@@ -2,26 +2,23 @@
     @section('content')
 
 <div class="row">
-        <div class="card col-7">
+    <div class="col-7">
+        <div class="card ">
             <div class="card-header card-title-dark">
                 <h5 class="card-title text-right">بيانات البوليصة</h5>
             </div>
             <div class="card-body p-4">
-                <form  action="{{ route('store-branches') }}">
+                <form method="post"  action="{{ route('update-policy'  , $policy->id) }}">
+                    @csrf
                     <div class="form-group row">
                         <label for="middle-name" class="control-label col-3">على حســـاب</label>
                         <div class="col-md-6 col-xs-12">
-                            <select class="form-control ">
+                            <select disabled class="form-control ">
                                 @foreach ($branches as $branch )
-                                    <option @if($branch->id == $policy->branch_id) selected @endif value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                    <option @if(($branch->id == $policy->branch_id)) selected @endif value="{{ $branch->id }}">{{ $branch->name }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        @if ($errors->has('total_los_pickups'))
-                            <span class="text-danger">
-                                <strong>{{ $errors->first('total_los_pickups') }}</strong>
-                            </span>
-                        @endif
                     </div>
                     <div class="form-group row">
                         <label class="control-label col-3" for="first-name">الاسم <span class="required">*</span>
@@ -43,18 +40,18 @@
                         </label>
                         <div class="col-md-6 col-xs-12">
                             <div class="custom-control-inline custom-radio">
-                                <input  @if($policy->type == 1) checked @endif class="custom-control-input" type="radio" id="customRadio1" name="customRadio">
+                                <input  @if($policy->type == 1) checked @endif class="custom-control-input" type="radio" value="1" id="customRadio1" name="type">
                                 <label for="customRadio1" class="custom-control-label">خسارة كلية</label>
                             </div>
                             <div class="custom-control-inline custom-radio">
-                                <input @if($policy->type == 2) checked @endif class="custom-control-input" type="radio" id="customRadio2" name="customRadio">
+                                <input @if($policy->type == 2) checked @endif class="custom-control-input" type="radio" value="2" id="customRadio2" name="type">
                                 <label for="customRadio2" class="custom-control-label">شامــل</label>
                             </div>
 
                         </div>
-                        @if ($errors->has('total_los_cars'))
+                        @if ($errors->has('type'))
                             <span class="text-danger">
-                                <strong>{{ $errors->first('total_los_cars') }}</strong>
+                                <strong>{{ $errors->first('type') }}</strong>
                             </span>
                         @endif
                     </div>
@@ -62,67 +59,66 @@
                         <label class="control-label col-3" for="last-name">قيمة التعويض<span class="required"></span>
                         </label>
                         <div class="col-md-6 col-xs-12">
-                        <input type="text" disabled value="{{ old('total_los_cars_accedint') ?? $policy->car_price }}"  name="total_los_cars_accedint"  class="form-control">
+                        <input type="text"  value="{{ old('car_price') ?? $policy->car_price }}"  name="car_price"  class="form-control">
                         </div>
-                        @if ($errors->has('total_los_cars_accedint'))
+                        @if ($errors->has('car_price'))
                         <span class="text-danger">
-                            <strong>{{ $errors->first('total_los_cars_accedint') }}</strong>
+                            <strong>{{ $errors->first('car_price') }}</strong>
                         </span>
                     @endif
                     </div>
                     <div class="form-group row">
                         <label for="middle-name" class="control-label col-3">نوع الهيكل</label>
                         <div class="col-md-6 col-xs-12">
-                            <select class="form-control">
-                            <option>صــــالون</option>
-                            <option>شــــحن</option>
-                            <option>نـــقل مشترك</option>
+                            <select name="car_type" class="form-control">
+                            <option @if( old('car_type') == 'صالون' || (!old('car_type') && $policy->car_type == 'صالون')) selected @endif value="صالون">صالون</option>
+                            <option @if( old('car_type') == 'شحن' || (!old('car_type') && $policy->car_type == 'شحن')) selected @endif value="شحن">شحن</option>
+                            <option @if( old('car_type') == 'نقل مشترك' || (!old('car_type') && $policy->car_type == 'نقل مشترك')) selected @endif value="نقل مشترك">نقل مشترك</option>
                             </select>
                         </div>
-                        @if ($errors->has('total_los_pickups'))
+                        @if ($errors->has('car_type'))
                         <span class="text-danger">
-                            <strong>{{ $errors->first('total_los_pickups') }}</strong>
+                            <strong>{{ $errors->first('car_type') }}</strong>
                         </span>
                     @endif
                     </div>
                     <div class="form-group row">
                             <label for="middle-name" class="control-label col-3">
-                            رقم اللوحة
+                                رقم اللوحة
                             </label>
                         <div class="col-md-6 col-xs-12">
-                        <input value="{{ old('total_los_vans') ?? $policy->car_number }}"  class="form-control" type="text" name="total_los_vans">
+                        <input value="{{ old('car_number') ?? $policy->car_number }}"  class="form-control" type="text" name="car_number">
                         </div>
-                        @if ($errors->has('total_los_vans'))
+                        @if ($errors->has('car_number'))
                             <span class="text-danger">
-                                <strong>{{ $errors->first('total_los_vans') }}</strong>
+                                <strong>{{ $errors->first('car_number') }}</strong>
                             </span>
                         @endif
                     </div>
                     <div class="form-group row">
                         <label for="middle-name" class="control-label col-3">نوع المركبة</label>
                         <div class="col-md-6 col-xs-12">
-                            <select class="form-control ">
-                            <option>option 1</option>
-                            <option>option 2</option>
-                            <option>option 3</option>
-                            <option>option 4</option>
-                            <option>option 5</option>
+                            <select name="car_name" class="form-control selectpicker" >
+                                <option  selected disabled value="" >اختر ....</option>
+                                @foreach ($cars as $car )
+                                    <option @if( old('car_name') == $car->name || (!old('car_name') && $policy->car_name == $car->name)) selected @endif value="{{ $car->name }}" >{{ $car->name }}</option>
+                                @endforeach
                             </select>
                         </div>
-                        @if ($errors->has('total_los_pickups'))
+                        @if ($errors->has('car_name'))
                             <span class="text-danger">
-                                <strong>{{ $errors->first('total_los_pickups') }}</strong>
+                                <strong>{{ $errors->first('car_name') }}</strong>
                             </span>
                         @endif
                     </div>
                     <div class="form-group row">
                         <label for="middle-name" class="control-label col-3">سنة الصنع</label>
                         <div class="col-md-6 col-xs-12">
-                            <input value="{{ old('full_cover_cars') ?? $policy->car_model }}" class="form-control" type="text" name="full_cover_cars">
+                            <input value="{{ old('car_model') ?? $policy->car_model }}" class="form-control" type="text" name="car_model">
                         </div>
-                        @if ($errors->has('full_cover_cars'))
+                        @if ($errors->has('car_model'))
                         <span class="text-danger">
-                            <strong>{{ $errors->first('full_cover_cars') }}</strong>
+                            <strong>{{ $errors->first('car_model') }}</strong>
                         </span>
                         @endif
                     </div>
@@ -130,13 +126,13 @@
                         <label for="middle-name" class="control-label col-3">رقم الشاصــي</label>
                         <div class="col-md-6 col-xs-12">
                             <div class="input-group-prepend">
-                                <input style="border-top-left-radius: 0 ; border-bottom-left-radius: 0" value="{{ old('full_cover_cars_per_k') ?? $policy->body_number }}" class="form-control" type="text" name="full_cover_cars_per_k">
+                                <input style="border-top-left-radius: 0 ; border-bottom-left-radius: 0" value="{{ old('body_number') ?? $policy->body_number }}" class="form-control" type="text" name="body_number">
                                 <a data-toggle="popover" data-bs-placement="left"  data-content="تم النسخ" style="border-top-right-radius: 0 ; border-bottom-right-radius: 0" class="input-group-text bg-info cursor-pointe">نسخ</a>
                             </div>
                         </div>
-                        @if ($errors->has('full_cover_cars_per_k'))
+                        @if ($errors->has('body_number'))
                         <span class="text-danger">
-                            <strong>{{ $errors->first('full_cover_cars_per_k') }}</strong>
+                            <strong>{{ $errors->first('body_number') }}</strong>
                         </span>
                         @endif
                     </div>
@@ -144,13 +140,13 @@
                         <label for="middle-name" class="control-label col-3">رقم المــحرك</label>
                         <div class="col-md-6 col-xs-12">
                             <div class="input-group-prepend">
-                                <input value="{{ old('full_cover_vans') ?? $policy->eng_number }}" class="form-control" type="text" name="full_cover_vans">
-                                <a data-toggle="popover" data-bs-placement="left"  data-content="تم النسخ" style="border-top-right-radius: 0 ; border-bottom-right-radius: 0" class="input-group-text bg-info cursor-pointe">نسخ</a>
+                                <input value="{{ old('eng_number') ?? $policy->eng_number }}" class="form-control" type="text" name="eng_number">
+                                <a data-toggle="popover" data-placement="right"  data-content="تم النسخ" style="border-top-right-radius: 0 ; border-bottom-right-radius: 0" class="input-group-text bg-info cursor-pointe">نسخ</a>
                             </div>
                         </div>
-                        @if ($errors->has('full_cover_vans'))
+                        @if ($errors->has('eng_number'))
                         <span class="text-danger">
-                            <strong>{{ $errors->first('full_cover_vans') }}</strong>
+                            <strong>{{ $errors->first('eng_number') }}</strong>
                         </span>
                         @endif
                     </div>
@@ -158,7 +154,12 @@
                         <label for="middle-name" class="control-label col-3">المـــدة</label>
                         <div class="row pl-0 col-md-6 col-xs-12">
                             <label for="middle-name" class="col-2">من</label>
-                            <input value="{{ \Carbon\Carbon::parse($policy->start_at)->format('Y-m-d') }}" aria-placeholder="dd-mm-yyyy" class="form-control col-md-10 col-xs-12" type="date" max="2030-12-31" name="full_cover_vans_per_k">
+                            <input value="{{ old('start_at') ?? \Carbon\Carbon::parse($policy->start_at)->format('Y-m-d') }}" aria-placeholder="dd-mm-yyyy" class="form-control col-md-10 col-xs-12" type="date" max="2030-12-31" name="start_at">
+                            @if ($errors->has('start_at'))
+                            <span class="text-danger">
+                                <strong>{{ $errors->first('start_at') }}</strong>
+                            </span>
+                            @endif
                         </div>
                     </div>
 
@@ -166,52 +167,54 @@
                        <label for="middle-name" class="control-label col-3"></label>
                         <div class="row pl-0 col-md-6 col-xs-12">
                             <label for="middle-name" class="col-2">الى</label>
-                            <input value="{{ \Carbon\Carbon::parse($policy->end_at)->format('Y-m-d') }}" aria-placeholder="dd-mm-yyyy" class="form-control col-md-10 col-xs-12" type="date" max="2030-12-31" name="full_cover_vans_per_k">
+                            <input value="{{ old('end_at') ??  \Carbon\Carbon::parse($policy->end_at)->format('Y-m-d') }}" aria-placeholder="dd-mm-yyyy" class="form-control col-md-10 col-xs-12" type="date" max="2030-12-31" name="end_at">
+                            @if ($errors->has('end_at'))
+                            <span class="text-danger">
+                                <strong>{{ $errors->first('end_at') }}</strong>
+                            </span>
+                            @endif
                         </div>
-                    </div>
+                        </div>
 
                     <div class="form-group row">
                         <label for="middle-name" class="control-label col-3">رقم العقد</label>
                         <div class="row pl-0 col-md-6 col-xs-12">
                                 <div class="col-4">
-                                    <input value="{{ old('full_cover_pickups') ?? 2021 }}" class="form-control col-12" type="text" name="full_cover_pickups">
+                                    <input value="{{ old('policy_date') ?? 2021 }}" class="form-control col-12" type="text" name="policy_date">
+                                    @if ($errors->has('policy_date'))
+                                    <span class="text-danger">
+                                        <strong>{{ $errors->first('policy_date') }}</strong>
+                                    </span>
+                                    @endif
                                 </div>
                                 <div class="col-8 pl-0">
-                                    <input value="{{ old('full_cover_pickups') }}" class="form-control col-12" type="text" name="full_cover_pickups">
+                                    <input value="{{ old('policy_number') ?? $policy->policy_number }}" class="form-control col-12" type="text" name="policy_number">
+                                    @if ($errors->has('policy_number'))
+                                    <span class="text-danger">
+                                        <strong>{{ $errors->first('policy_number') }}</strong>
+                                    </span>
+                                    @endif
                                 </div>
                         </div>
-                        @if ($errors->has('full_cover_pickups'))
-                        <span class="text-danger">
-                            <strong>{{ $errors->first('full_cover_pickups') }}</strong>
-                        </span>
-                        @endif
                     </div>
                     <div class="form-group row">
-                        <label for="middle-name" class="control-label col-3">سعر البـــيع</label>
-                        <div class="col-md-6 col-xs-12">
-                            <input value="{{ old('full_cover_pickups_per_k') ?? $policy->price }}" class="form-control " type="text" name="full_cover_pickups_per_k">
-                        </div>
-                        @if ($errors->has('full_cover_pickups_per_k'))
-                            <span class="text-danger">
-                                <strong>{{ $errors->first('full_cover_pickups_per_k') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-
-                    <div class="ln_solid"></div>
-                    <div class="form-group row">
-                        <div class="col-md-6 col-xs-12 col-md-offset-3">
-                            <button type="submit" class="btn btn-success">اضافة</button>
-                            <button class="btn btn-primary" type="reset">افراغ الحقول</button>
-                            <a class="btn btn-primary" href="{{ route('branches') }}">الغاء</a>
+                        <div class="col-3"></div>
+                        <div class="row col-6 pl-0">
+                            <div class="col-6">
+                                <button name="status" type="submit" value="1" class="btn btn-success col-12">اصدار</button>
+                            </div>
+                            <div class="col-6  pl-0">
+                                <button name="status" type="submit" value="-1" class="btn btn-danger col-12">رفض</button>
+                            </div>
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>
+    </div>
 
-        <div class="card col-5">
+    <div class="col-5">
+        <div class="card ">
             <div class="card-header card-title-dark">
                 <h5 class="card-title text-right">المرفقات</h5>
             </div>
@@ -230,5 +233,6 @@
                 </form>
             </div>
         </div>
+    </div>
 </div>
     @endsection

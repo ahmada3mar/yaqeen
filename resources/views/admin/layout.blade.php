@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
     <link rel="stylesheet" href="/plugins/summernote/summernote-bs4.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed dark-mode">
@@ -192,7 +194,7 @@
             <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
             <li class="nav-item menu-open">
-              <a href="#" class="nav-link active">
+              <a href="#" class="nav-link {{ strpos( Route::currentRouteName(), 'policy') != false ?  'active' :  null }} ">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
                   البوالص
@@ -201,19 +203,19 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="{{ route('create-policy') }}" class="nav-link active">
+                  <a href="{{ route('create-policy') }}" class="nav-link {{  Route::currentRouteName() == 'create-policy' ?  'active' :  null }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>اصدار بوليصة</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{{ route('pending-policy') }}" class="nav-link">
+                  <a href="{{ route('pending-policy') }}" class="nav-link {{  Route::currentRouteName() == 'pending-policy' ?  'active' :  null }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>البوالص المعلقة</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{{ route('policy') }}" class="nav-link">
+                  <a href="{{ route('policy') }}" class="nav-link {{  Route::currentRouteName() == 'policy' ?  'active' :  null }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>جميع البوالص</p>
                   </a>
@@ -835,10 +837,18 @@
       <div class="content-header">
         <div class="container-fluid">
           <div class="row mb-2">
+              <div class="col-sm-12">
+                    @if(Session::has('CRUD'))
+                    <div class="alert alert-success p-3" role="alert">
+                            {{ Session::get('CRUD') }}!
+                      </div>
+                    @endif
+              </div>
 
           </div><!-- /.row -->
         </div><!-- /.container-fluid -->
       </div>
+      <!-- /.col -->
       <!-- /.content-header -->
 
       <!-- Main content -->
@@ -852,10 +862,9 @@
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">
-      <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-      All rights reserved.
-      <div class="float-right d-none d-sm-inline-block">
-        <b>Version</b> 3.2.0-rc
+      <strong>مركز اليقين الأردني لأصدار وثائق التأمين
+      <div class="mx-2 text-info d-none d-sm-inline-block">
+        <b>وكلاء</b> الإتحاد العربي الدولي للتأمين
       </div>
     </footer>
 
@@ -869,12 +878,21 @@
     <script>
         $.widget.bridge('uibutton', $.ui.button)
         $(function () {
-            $('[data-toggle="popover"]').popover()
+            $('[data-toggle="popover"]').popover({placement:'left'})
 
-            $('[data-toggle="popover"]').on('click' , function(v){
-                let copyText = $(this).parent().find('input').val() ;
-                navigator.clipboard.writeText(copyText);
+            $('[data-toggle="popover"]').on('click' ,  function(v){
+                let copyText = $(this).parent().find('input') ;
+                copyText.select()
+                document.execCommand('copy')
+                window.getSelection().removeAllRanges();
+                setTimeout(function() {
+                   $( v.target).popover('hide')
+                }, 1000);
+
             })
+            $(function () {
+                $('select').selectpicker({liveSearch:true , size : 5 , style:'btn-outline-secondary text-light'});
+            });
         })
     </script>
     <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -891,6 +909,10 @@
     <script src="/dist/js/adminlte.js"></script>
     <script src="/dist/js/pages/dashboard.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script>
+
+
 </body>
 
 </html>

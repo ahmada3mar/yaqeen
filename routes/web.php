@@ -28,6 +28,7 @@ Route::get('/pending-policy', 'PolicyController@pending')->name('pending-policy'
 Route::get('/policy/{policy}', 'PolicyController@edit')->name('edit-policy');
 Route::get('/create-policy', 'PolicyController@create')->name('create-policy');
 Route::post('/store-policy', 'PolicyController@store')->name('store-policy');
+Route::post('/{policy}/update-policy', 'PolicyController@update')->name('update-policy');
 ## branches
 Route::get('/branches', 'BranchController@index')->name('branches');
 Route::get('/branches/create', 'BranchController@create')->name('create-branches');

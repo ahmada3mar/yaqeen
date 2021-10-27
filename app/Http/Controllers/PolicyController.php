@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Branch;
+use App\Models\Car;
 use App\Models\Policy;
 use App\Models\User;
 use Carbon\Carbon;
@@ -20,9 +21,21 @@ class PolicyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function index()
     {
         $policies = [];
+
+        $user = Auth::user() ;
+
+
+        if($user->role == 'admin' ){
+            $policies = Policy::latest()->paginate(100);
+        }else{
+            $policies = Policy::where('branch_id' , $user->branch_id)->orWhere('user_id' , $user->id)->latest()->paginate(100);
+        }
+
         return view('admin.policy.index' , compact('policies'));
     }
 
@@ -49,8 +62,7 @@ class PolicyController extends Controller
 
     public function store(Request $request)
     {
-        // return $request->all();
-        // return User::where('role' , 'exporter')->withCount('policy')->orderBy('policy_count' , 'desc')->first()->id ;
+
         $policy = Policy::create(
             [
                 'name' => $request->name ,
@@ -160,7 +172,8 @@ class PolicyController extends Controller
     public function edit(Policy $policy)
     {
         $branches = Branch::all() ;
-        return view('admin.policy.edit' , compact('policy' , 'branches')) ;
+        $cars = Car::all() ;
+        return view('admin.policy.edit' , compact('policy' , 'branches' , 'cars')) ;
     }
 
     /**
@@ -170,9 +183,48 @@ class PolicyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Policy $policy)
     {
-        //
+        $user = Auth::user();
+
+        if($user-> role != 'admin' && $policy->user_id != $user->id){
+            return abort(403, 'لا يسمح لك بالتعديل على البوليصة');
+        }
+
+       $data = $request->validate([
+            'name' => 'required|string',
+            'type' => "required|string|in:1,2,3",
+            'car_price' => 'required|numeric',
+            'car_type' => 'required|string',
+            'car_number' => 'required|string',
+            'car_name' => 'required|string',
+            'car_model' => 'required|numeric|min:1860|max:' . Carbon::now()->addYear()->year,
+            'body_number' => 'required|regex:/^[A-HJ-NPR-Z\d]{8}[A-HJ-NPR-Z\d]{3}\d{6}$/',
+            'eng_number' => 'required|string',
+            'start_at' => 'required|date|after_or_equal:' . Carbon::now()->format('Y-m-d'),
+            'end_at' => 'required|date|after:start_at',
+            'policy_number' => 'required|numeric',
+            'policy_date' => 'required|numeric',
+            'status' => 'required|numeric|in:-1,1'
+        ]);
+
+        $policy->name = $data['name'] ;
+        $policy->type = $data['type'] ;
+        $policy->car_price = $data['car_price'] ;
+        $policy->car_type = $data['car_type'] ;
+        $policy->car_number = $data['car_number'] ;
+        $policy->car_name = $data['car_name'] ;
+        $policy->car_model = $data['car_model'] ;
+        $policy->body_number = $data['body_number'] ;
+        $policy->eng_number = $data['eng_number'] ;
+        $policy->start_at = $data['start_at'] ;
+        $policy->end_at = $data['end_at'] ;
+        $policy->policy_number = $data['policy_number'] ;
+        $policy->status = $data['status'] ;
+
+        $policy->save();
+
+        return redirect(route('policy'))->with('CRUD' , 'تم الاصدار بنجاح');
     }
 
     /**

@@ -3256,6 +3256,7 @@ input[type="button"].btn-block {
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 0.25rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
+  text-align: right;
 }
 
 .dropdown-menu-left {
@@ -6788,6 +6789,10 @@ a.close.disabled, a.disabled.mailbox-attachment-close {
 
 .align-middle {
   vertical-align: middle !important;
+}
+
+table.align-middle td , th{
+    vertical-align: middle !important;
 }
 
 .align-bottom {
@@ -15433,8 +15438,12 @@ body.text-sm .control-sidebar {
 }
 
 .dark-mode .dropdown-menu {
-  background-color: #343a40;
+  background-color: #6b6d6e;
   color: #fff;
+}
+
+.filter-option-inner-inner{
+    text-align: right !important;
 }
 
 .dark-mode .dropdown-item {

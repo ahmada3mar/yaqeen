@@ -41,6 +41,7 @@
                                             <th scope="col">نوع التامين</th>
                                             <th scope="col">قيمة التعويض</th>
                                             <th scope="col">الفرع</th>
+                                            <th scope="col">الحالة</th>
                                             <th scope="col">التاريخ</th>
                                             <th scope="col">الاجراءات</th>
                                         </tr>
@@ -54,7 +55,25 @@
                                                 <td>{{ \App\models\Policy::$types[$policy->type] }}</td>
                                                 <td>{{ $policy->car_price }}</td>
                                                 <td>{{ $policy->branch->name }}</td>
-                                                <td>{{ $policy->created_at->diffForHumans() }}</td>
+                                                <td>
+                                                    @if($policy->status == -1)
+                                                        <span class="badge p-2 bg-danger">مرفوضة</span>
+                                                    @elseif ($policy->status == 0)
+                                                        <span class="badge p-2 bg-warning text-dark ">معلقة</span>
+                                                    @else
+                                                        <span class="badge p-2 bg-success">مصدرة</span>
+                                                    @endif
+                                                    </td>
+                                                <td>
+                                                    <div >
+                                                        <div dir="ltr" style="text-align:right">
+                                                            {{ $policy->created_at->format('h:i:a ') }}
+                                                        </div>
+                                                        <div>
+                                                            {{ $policy->created_at->format('Y/m/d') }}
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <a href="{{ route('edit-policy' , $policy->id) }}" class="btn btn-info">عرض المزيد</a>
                                                 </td>

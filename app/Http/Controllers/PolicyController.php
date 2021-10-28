@@ -135,7 +135,7 @@ class PolicyController extends Controller
             'VehOwnNameGrand' => '' ,
             'VehOwnNameFamily' => '' ,
             'OwnerType' => '0' ,
-            'varResp' => '1' ,
+            'varResp' => '0' ,
         ];
 
         $query = Arr::query($data);

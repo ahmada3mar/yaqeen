@@ -430,7 +430,7 @@
               <div class="col-sm-12">
                     @if(Session::has('CRUD'))
                     <div class="alert alert-success p-3" role="alert">
-                            {{ Session::get('CRUD') }}!
+                            {{ Session::get('CRUD') }}
                       </div>
                     @endif
               </div>

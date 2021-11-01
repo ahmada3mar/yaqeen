@@ -1,5 +1,6 @@
 import moment from 'moment';
 import 'moment/locale/ar';
+import 'moment/locale/en-au';
 import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 

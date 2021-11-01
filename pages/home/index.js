@@ -17,7 +17,7 @@ export default function Home(props){
     const debit  = approve.reduce((i , x)=> i + x.price , 0)
 
     const getData = async ()=> {
-        const data =  await axios.get(`http://92.253.102.198/api/get-policy`)
+        const data =  await axios.get(`https://yaqeens.com/api/get-policy`)
         // console.log(data.data)
         setData(data.data)
       }
@@ -32,7 +32,6 @@ export default function Home(props){
              <View  style={{ flexDirection:'column' , justifyContent:'flex-end'  }}>
                 <Text style={{ fontSize:18  , textAlign:'right' }}>الاســــم : {props.user.name}</Text>
                 <Text style={{ fontSize:18  , textAlign:'right' }}>المنطقة  :  {props.user.branch.name}</Text>
-                <Text style={{ fontSize:18  , textAlign:'right' }}>الرصيد  :  {props.user.branch.id}</Text>
              </View>
         </View>
 

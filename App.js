@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, AsyncStorage , View, TextInput, ImageBackground , Text  , TouchableHighlight} from 'react-native';
+import { Button , View, TextInput, ImageBackground , Text  , TouchableHighlight} from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import Home from './pages/home';
@@ -8,13 +8,18 @@ import CreateTotal_loss from './pages/total_loss/create'
 import * as Permissions from 'expo-camera';
 import logo from './assets/icon.png'
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 
 
 
 function Logout(props) {
-  axios.get('http://92.253.102.198/logout').then(res => res.data == 'succsess' &&  props.setUser(false)  )
+  axios.get('https://yaqeens.com/logout').then(res => {res.data == 'succsess' ;
+  AsyncStorage.clear()
+  props.setUser(false)
+}
+   )
   return null
 }
 
@@ -37,7 +42,7 @@ function LoginPage(props) {
 
 
   const login = async (userName , password)=>{
-    const res = await  axios.get(`http://92.253.102.198/api/login?username=${userName}&password=${password}` )
+    const res = await  axios.get(`https://yaqeens.com/api/login?username=${userName}&password=${password}` )
     if(res.data[0].id){
       props.setUser(res.data[0])
       _storeData(res.data[1])
@@ -92,7 +97,7 @@ export default function App() {
   React.useEffect( ()=>{
     Permissions.requestCameraPermissionsAsync();
 
-    axios.get(`http://92.253.102.198/api/login`  )
+    axios.get(`https://yaqeens.com/api/login`  )
     .then(res=>{
       if(res.data.id){
         setUser(res.data)

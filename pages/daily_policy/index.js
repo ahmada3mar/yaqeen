@@ -1,10 +1,12 @@
 import React, { useState , useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import axios from 'axios'
-import { ScrollView, Text , View , Image , AsyncStorage , Dimensions, Button, TouchableOpacity   } from 'react-native';
+import { ScrollView, Text , View , Image  , Dimensions, Button, TouchableOpacity   } from 'react-native';
 import Card from './card';
 import reload from '../../img/reload.png'
 import CodePush from 'react-native-code-push';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 
 
@@ -17,7 +19,7 @@ export default function DailyPolicy(props){
       
 
          const getData = async ()=> {
-          const data =  await axios.get(`http://92.253.102.198/api/get-policy`).catch(err =>  CodePush.restartApp())
+          const data =  await axios.get(`https://yaqeens.com/api/get-policy`).catch(err =>  CodePush.restartApp())
           setData(data.data)
         }
 
@@ -31,7 +33,6 @@ export default function DailyPolicy(props){
              <View  style={{ flexDirection:'column' , justifyContent:'flex-end'  }}>
                 <Text style={{ fontSize:18  , textAlign:'right' }}>الاســــم : {props.user.name}</Text>
                 <Text style={{ fontSize:18  , textAlign:'right'  }}>المنطقة  :  {props.user.branch.name}</Text>
-                <Text style={{ fontSize:18  , textAlign:'right' }}>الرصيد  :  {props.user.branch.id}</Text>
              </View>
             <TouchableOpacity onPress={()=>setRefresh(c=>!c)}>
                 <Image style={{ width:50 , height:50}} source={reload} width={50} height={50}/>

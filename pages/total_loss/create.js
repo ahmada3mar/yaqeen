@@ -1,5 +1,5 @@
 import React, { useState , useEffect } from 'react';
-import { ScrollView, Text , View , StyleSheet , ImageBackground , Dimensions, Button, TouchableOpacity  , Animated , Easing, TextInput, Picker, Alert , AsyncStorage} from 'react-native';
+import { ScrollView, Text , View , StyleSheet , Picker , ImageBackground , Dimensions, Button, TouchableOpacity  , Animated , Easing, TextInput, Alert } from 'react-native';
 import RadioButtonRN from 'radio-buttons-react-native';
 import { CommonActions } from '@react-navigation/native';
 import front_id from '../../img/front-card.png'
@@ -8,7 +8,10 @@ import * as ImagePicker from 'expo-image-picker'
 import axios from 'axios';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import DatePicker from 'react-native-datepicker'
+import moment, { now } from 'moment';
+import humanizeDuration from "humanize-duration"
+import {cars} from  '../../data/cars'
 
 
 
@@ -20,14 +23,14 @@ const AppStack = createNativeStackNavigator();
 
 function Create(props){
     const [image , setImage] = useState(null)
+    const [start_at , setStartAt] = useState(new Date())
+    const [end_at , setEndAt] = useState(new Date(new Date().getFullYear() + 1 , new Date().getMonth() , new Date().getDay()))
+    const [open , setOpen] = useState(false)
     const [imageBack , setImageBack] = useState(null)
     const [uploading , setUploading] = useState(null)
-    const [carObj , setCarObj] = useState({policy_type:'1'})
+    const [carObj , setCarObj] = useState({policy_type:'1' , start_at:start_at , end_at:end_at})
 
 
-    // useFocusEffect(()=>{
-    //     console.log(dataTosend)
-    // })
 
     const _handleImagePicked = async pickerResult => {
 
@@ -48,7 +51,7 @@ function Create(props){
             
 			setUploading(true)
             setImage(manipResult);
-            axFront(manipResult.uri , 'http://92.253.102.198/api/FrontID');
+            axFront(manipResult.uri , 'https://yaqeens.com/api/FrontID');
 
 
 		} catch (e) {
@@ -93,7 +96,7 @@ function Create(props){
              
 			setUploading(true)
             setImageBack(manipResult);
-            ax(manipResult.uri , 'http://92.253.102.198/api/BackID');
+            ax(manipResult.uri , 'https://yaqeens.com/api/BackID');
 
 
 
@@ -196,7 +199,6 @@ function Create(props){
              <View  style={{ flexDirection:'column' , justifyContent:'flex-end'  }}>
                 <Text style={{ fontSize:18   , textAlign:'right' }}>الاســــم : {props.user.name}</Text>
                 <Text style={{ fontSize:18   , textAlign:'right' }}>المنطقة  :  {props.user.branch.name}</Text>
-                <Text style={{ fontSize:18   , textAlign:'right' }}>الرصيد  :  {props.user.branch.id}</Text>
              </View>
         </View>
             <View style={{ flex:1  , marginVertical:5}}>
@@ -205,6 +207,80 @@ function Create(props){
                     data={data}
                     selectedBtn={(e) => setCarObj(c=>{ return {...c , type:e.label}}) }
                 />
+            </View>
+
+            <View style={{ flex:1  , marginVertical:5 , display:'flex' , flexDirection:'row-reverse' , backgroundColor:'white' , padding:10 , alignItems:'center'}}>
+            <Text style={{ fontSize:18   , textAlign:'right' , flex:1 }}>بداية التأمين</Text>
+                <DatePicker
+                    style={{width: 200}}
+                    date={start_at}
+                    mode="date"
+                    locale="en-au"
+                    placeholder="select date"
+                    format="YYYY/MM/DD"
+                    minDate="2021/11/01"
+                    maxDate="2023/11/01"
+                    customStyles={{
+                    dateIcon: {
+                        position: 'absolute',
+                        left: 0,
+                        top: 4,
+                        marginLeft: 0
+                    },
+                    dateInput: {
+                        marginLeft: 36
+                    }
+                    // ... You can check the source to find the other keys.
+                    }}
+                    onDateChange={(date) => {
+                        setEndAt(date) ;
+                        setCarObj(c=>{ return {...c , start_at:date}})
+                    }}
+                />
+            </View>
+
+            <View style={{ flex:1  , marginVertical:5 , display:'flex' , flexDirection:'row-reverse' , backgroundColor:'white' , padding:10 , alignItems:'center'}}>
+            <Text style={{ fontSize:18   , textAlign:'right' , flex:1 }}>نهاية التأمين</Text>
+                <DatePicker
+                    style={{width: 200}}
+                    date={end_at}
+                    mode="date"
+                    locale="en-au"
+                    placeholder="select date"
+                    format="YYYY/MM/DD"
+                    minDate="2021/11/01"
+                    maxDate="2023/11/01"
+                    customStyles={{
+                    dateIcon: {
+                        position: 'absolute',
+                        left: 0,
+                        top: 4,
+                        marginLeft: 0
+                    },
+                    dateInput: {
+                        marginLeft: 36
+                    }
+                    // ... You can check the source to find the other keys.
+                    }}
+                    onDateChange={(date) => {
+                        setEndAt(date) ;
+                        setCarObj(c=>{ return {...c , end_at:date}})
+                    } 
+                }
+                />
+            </View>
+            <View style={{ flex:1  , marginVertical:5 , display:'flex' , flexDirection:'row-reverse' , backgroundColor:'white' , padding:10 , alignItems:'center'}}>
+            <Text style={{ fontSize:18   , textAlign:'right' , flex:1 }}>المدة</Text>
+                <Text>
+                    {
+                        humanizeDuration(moment
+                        .duration(moment(end_at, 'YYYY/MM/DD')
+                        .diff(moment(start_at, 'YYYY/MM/DD'))
+                        )
+                        .locale('ar')
+                        .asMilliseconds() , { largest: 3 , language:'ar' , units: ["y", "mo" , 'd'] , round: true  })
+                    }
+                </Text>
             </View>
 
             <View style={{ flex:1  , marginVertical:5 }}>
@@ -231,6 +307,49 @@ function Create(props){
 
 function Next(props){
     const [obj , setObj] = useState(props.route.params.carObj || {})
+    const years = [
+        1985 ,
+        1986 ,
+        1987 ,
+        1988 ,
+        1989 ,
+        1990 ,
+        1991 ,
+        1992 ,
+        1993 ,
+        1994 ,
+        1995 ,
+        1996 ,
+        1997 ,
+        1998 ,
+        1999 ,
+        2000 ,
+        2001 ,
+        2002 ,
+        2003 ,
+        2004 ,
+        2005 ,
+        2006 ,
+        2007 ,
+        2008 ,
+        2009 ,
+        2010 ,
+        2011 ,
+        2012 ,
+        2013 ,
+        2014 ,
+        2015 ,
+        2016 ,
+        2017 ,
+        2018 ,
+        2019 ,
+        2020 ,
+        2021 ,
+        2022 ,
+        2023 ,
+        2024 ,
+    ]
+
     const go = ()=>{
         props.navigation.dispatch(
             CommonActions.reset({
@@ -242,18 +361,38 @@ function Next(props){
         );
         }
 
+        const cars_list =  cars.map( i =>
 
+            <Picker.Item key={i.id} label={i.name} value={i.name}/>
+        )
+
+
+        const years_list =  years.map( i =>
+
+            <Picker.Item key={i} label={`${i}`}  value={i}/>
+        )
+
+        const goToCheckout = ()=>{
+            if(obj.name && obj.number && obj.body && obj.eng && obj.type && obj.car_name && obj.car_model && obj.start_at && obj.end_at ){
+
+                props.navigation.navigate({
+                    name: 'checkout',
+                    params: { carObj: obj},
+                })
+            }else{
+                Alert.alert('خطاء' , 'يرجى التأكد من جميع الخانات')
+            }
+        }
 
     return <ScrollView >
          <View style={{ flex:1  , alignItems:'center' , justifyContent:'space-between'   , flexDirection:'row-reverse', padding:10, height:100 , borderColor:'black' , borderWidth:1 }}>
              <View  style={{ flexDirection:'column' , justifyContent:'flex-end'  }}>
                 <Text style={{ fontSize:18  , textAlign:'right' }}>الاســــم : {props.user.name}</Text>
                 <Text style={{ fontSize:18  , textAlign:'right' }}>المنطقة  :  {props.user.branch.name}</Text>
-                <Text style={{ fontSize:18  , textAlign:'right' }}>الرصيد  :  {props.user.branch.id}</Text>
              </View>
         </View>
     	<View style={styles.result}>
-    <View style={{ margin:5 , display:'flex' , flexDirection:'row-reverse'  }}>
+    <View style={{ margin:5 , display:'flex' , flexDirection:'row-reverse' ,alignItems:'center' }}>
         <Text style={styles.label}>
             الاســم : 
         </Text>
@@ -261,22 +400,38 @@ function Next(props){
 
     </View>
     
-    <View style={{ margin:5 , display:'flex' , flexDirection:'row-reverse'  }}>
+    <View style={{ margin:5 , display:'flex' , flexDirection:'row-reverse' ,alignItems:'center' }}>
         <Text style={styles.label}>
             رقم اللوحة : 
         </Text>
         <TextInput onChangeText={e=> setObj(c=>{ return { ...c , number: e} })} value={obj.number || ''} style={{paddingHorizontal:10 , backgroundColor:'white' , padding:5 , flex:4 , textAlign:'right' , borderWidth:1}} />           
 
     </View>
+
     
-    <View style={{ margin:5 , display:'flex' , flexDirection:'row-reverse'  }}>
+    <View style={{ margin:5 , display:'flex' , flexDirection:'row-reverse' ,alignItems:'center' }}>
+        <Text style={styles.label}>
+            رقم الشاصي : 
+        </Text>
+        <TextInput onChangeText={e=> setObj(c=>{ return { ...c , body: e} })} value={obj.body || ''} style={{paddingHorizontal:10 , backgroundColor:'white' , padding:5 , flex:4 , textAlign:'right' , borderWidth:1}} />           
+
+    </View>
+
+    <View style={{ margin:5 , display:'flex' , flexDirection:'row-reverse' ,alignItems:'center' }}>
+        <Text style={styles.label}>
+            رقم المحرك : 
+        </Text>
+        <TextInput onChangeText={e=> setObj(c=>{ return { ...c , eng: e} })} value={obj.eng || ''} style={{paddingHorizontal:10 , backgroundColor:'white' , padding:5 , flex:4 , textAlign:'right' , borderWidth:1}} />           
+    </View>
+    
+    <View style={{ margin:5 , display:'flex' , flexDirection:'row-reverse' ,alignItems:'center'  }}>
         <Text style={styles.label}>
             نوع الهيكل : 
         </Text>
         <Picker
         selectedValue={obj.type || ''}
         style={{ height: 50, width: 150 , justifyContent:'flex-end' , alignContent:'flex-end' , alignItems:'flex-end' }}
-        onValueChange={(itemValue, itemIndex) => setObj(c=>{ return { ...c , number: itemValue} })}
+        onValueChange={(itemValue, itemIndex) => setObj(c=>{ return { ...c , type: itemValue} })}
       >
         <Picker.Item label="ركوب صغير" value="ركوب صغير" />
         <Picker.Item label="شحن" value="شحن" />
@@ -285,38 +440,108 @@ function Next(props){
 
     </View>
     
-    <View style={{ margin:5 , display:'flex' , flexDirection:'row-reverse'  }}>
+    <View style={{ margin:5 , display:'flex' , flexDirection:'row-reverse' ,alignItems:'center' }}>
         <Text style={styles.label}>
             نوع المركبة :
         </Text>
-            <Text style={{paddingHorizontal:10 , backgroundColor:'white' , padding:5 , flex:4 , textAlign:'right' , borderWidth:1}}>
-                هيونداي
-            </Text>
+            <Picker
+            selectedValue={obj.type || ''}
+            style={{ height: 50, width: 150 , justifyContent:'flex-end' , alignContent:'flex-end' , alignItems:'flex-end' }}
+            onValueChange={(itemValue, itemIndex) => setObj(c=>{ return { ...c , car_name: itemValue} })}
+        >
+            <Picker.Item key={0} label={'اختر ....'} value={""}/>
+
+            {cars_list}
+
+        </Picker>
     </View>
-    <View style={{ margin:5 , display:'flex' , flexDirection:'row-reverse'  }}>
+    <View style={{ margin:5 , display:'flex' , flexDirection:'row-reverse' ,alignItems:'center' }}>
         <Text style={styles.label}>
             سنة الصنع :
         </Text>
-            <Text style={{paddingHorizontal:10 , backgroundColor:'white' , padding:5 , flex:4 , textAlign:'right' , borderWidth:1}}>
-                2015
-            </Text>
+        <Picker
+            selectedValue={obj.type || ''}
+            style={{ height: 50, width: 150 , justifyContent:'flex-end' , alignContent:'flex-end' , alignItems:'flex-end' }}
+            onValueChange={(itemValue, itemIndex) => setObj(c=>{ return { ...c , car_model: itemValue} })}
+        >
+            <Picker.Item key={0} label={'اختر ....'} value={""}/>
+            {years_list}
+
+        </Picker>
     </View>
 
-    <View style={{ margin:5 , display:'flex' , flexDirection:'row-reverse'  }}>
-        <Text style={styles.label}>
-            رقم الشاصي : 
-        </Text>
-        <TextInput onChangeText={e=> setObj(c=>{ return { ...c , body: e} })} value={obj.body || ''} style={{paddingHorizontal:10 , backgroundColor:'white' , padding:5 , flex:4 , textAlign:'right' , borderWidth:1}} />           
+    <View style={{ flex:1  , marginVertical:5 , display:'flex' , flexDirection:'row-reverse' , backgroundColor:'white' , paddingHorizontal:10 , paddingVertical:5 , alignItems:'center'}}>
+            <Text style={{ textAlign:'right' , flex:1 }}>بداية التأمين</Text>
+                <DatePicker
+                    style={{width: 200}}
+                    date={obj.start_at}
+                    mode="date"
+                    locale="en-au"
+                    placeholder="select date"
+                    format="YYYY/MM/DD"
+                    minDate="2021/11/01"
+                    maxDate="2023/11/01"
+                    customStyles={{
+                    dateIcon: {
+                        position: 'absolute',
+                        left: 0,
+                        top: 4,
+                        marginLeft: 0
+                    },
+                    dateInput: {
+                        marginLeft: 36
+                    }
+                    // ... You can check the source to find the other keys.
+                    }}
+                    onDateChange={(date) => {
+                        setObj(c=>{ return {...c , start_at:date}})
+                    }}
+                />
+            </View>
 
-    </View>
+            <View style={{ flex:1  , marginVertical:5 , display:'flex' , flexDirection:'row-reverse' , backgroundColor:'white' , paddingHorizontal:10 , paddingVertical:5 , alignItems:'center'}}>
+            <Text style={{  textAlign:'right' , flex:1 }}>نهاية التأمين</Text>
+                <DatePicker
+                    style={{width: 200}}
+                    date={obj.end_at}
+                    mode="date"
+                    locale="en-au"
+                    placeholder="select date"
+                    format="YYYY/MM/DD"
+                    minDate="2021/11/01"
+                    maxDate="2023/11/01"
+                    customStyles={{
+                    dateIcon: {
+                        position: 'absolute',
+                        left: 0,
+                        top: 4,
+                        marginLeft: 0
+                    },
+                    dateInput: {
+                        marginLeft: 36
+                    }
+                    // ... You can check the source to find the other keys.
+                    }}
+                    onDateChange={(date) => {
+                        setObj(c=>{ return {...c , end_at:date}})
+                    } 
+                }
+                />
+            </View>
 
-    <View style={{ margin:5 , display:'flex' , flexDirection:'row-reverse'  }}>
-        <Text style={styles.label}>
-            رقم المحرك : 
-        </Text>
-        <TextInput onChangeText={e=> setObj(c=>{ return { ...c , eng: e} })} value={obj.eng || ''} style={{paddingHorizontal:10 , backgroundColor:'white' , padding:5 , flex:4 , textAlign:'right' , borderWidth:1}} />           
-    </View>
-
+            <View style={{ flex:1  , marginVertical:5 , display:'flex' , flexDirection:'row-reverse' , backgroundColor:'white' , paddingHorizontal:10 , paddingVertical:5 , alignItems:'center'}}>
+            <Text style={{  textAlign:'right' , flex:1 }}>مدة التأمين</Text>
+                <Text>
+                    {
+                        humanizeDuration(moment
+                            .duration(moment(obj.end_at, 'YYYY/MM/DD')
+                            .diff(moment(obj.start_at, 'YYYY/MM/DD'))
+                            )
+                            .locale('ar')
+                            .asMilliseconds() , { largest: 3 , language:'ar' , units: ["y", "mo" , 'd'] , round: true  })
+                        }
+                </Text>
+            </View>
 
     
     
@@ -325,10 +550,7 @@ function Next(props){
 </View>
     <View style={{ margin:10 }}>
 
-        <Button  title="التـــالي" onPress={()=> props.navigation.navigate({
-                name: 'checkout',
-                params: { carObj: obj},
-            })} />
+        <Button  title="التـــالي" onPress={()=> goToCheckout()} />
     </View>
 </ScrollView>
 
@@ -339,6 +561,8 @@ function Checkout(props){
     const [carObj , setCarObj] = useState(props.route.params.carObj || {})
 
     const spinValue = new Animated.Value(0)
+
+
 
     Animated.loop(
         Animated.timing(
@@ -358,7 +582,7 @@ function Checkout(props){
       })
 
       const getKrooka = async () => {
-        const res = await axios.post( 'http://92.253.102.198/api/checkKroka' , {car:carObj})
+        const res = await axios.post( 'https://yaqeens.com/api/checkKroka' , {car:carObj})
         if(res.data){
             console.log(res.data)
             setCarObj(k => { return  { ...k , krooka : [' لا يوجد نتائج ، الرجاء المحاولة مرة أخرى ' , ' نتيجة البحث : 0 تطابق '].includes(res.data.krooka.html)  ? 'لا يوجد حوادث ' : res.data.krooka.children.length -1 , cost:res.data.cost }})
@@ -366,7 +590,7 @@ function Checkout(props){
 }
 
      const store = async () => {
-        const res = await axios.post( 'http://92.253.102.198/api/store-policy' , carObj)
+        const res = await axios.post( 'https://yaqeens.com/api/store-policy' , carObj)
         console.log(res.data)
         if(res.data.id){
             props.navigation.dispatch(
@@ -390,7 +614,7 @@ function Checkout(props){
       
 
     // useFocusEffect(React.useCallback(() => {
-    //     axios.post( 'http://92.253.102.198/api/checkKroka' , {body:carObj.body})
+    //     axios.post( 'https://yaqeens.com/api/checkKroka' , {body:carObj.body})
     //     .then(res=>{
   
     //         console.log(res.data);
@@ -412,7 +636,6 @@ function Checkout(props){
              <View  style={{ flexDirection:'column' , justifyContent:'flex-end'  }}>
                 <Text style={{ fontSize:18  , textAlign:'right' }}>الاســــم : {props.user.name}</Text>
                 <Text style={{ fontSize:18  , textAlign:'right' }}>المنطقة  :  {props.user.branch.name}</Text>
-                <Text style={{ fontSize:18  , textAlign:'right' }}>الرصيد  :  {props.user.branch.id}</Text>
              </View>
         </View>
     <View style={styles.result}>
@@ -430,7 +653,7 @@ function Checkout(props){
         نوع المركبة :
     </Text>
         <Text style={{paddingHorizontal:10 , backgroundColor:'white' , padding:5 , flex:4 , textAlign:'right' , borderWidth:1}}>
-            هيونداي
+            {props.route.params.carObj.car_name || ''}       
         </Text>
 </View>
 
@@ -439,7 +662,7 @@ function Checkout(props){
         سنة الصنع :
     </Text>
         <Text style={{paddingHorizontal:10 , backgroundColor:'white' , padding:5 , flex:4 , textAlign:'right' , borderWidth:1}}>
-            2015
+        {props.route.params.carObj.car_model || ''}
         </Text>
 </View>
 
@@ -469,6 +692,22 @@ function Checkout(props){
     </Text>
         <Text style={{paddingHorizontal:10 , backgroundColor:'white' , padding:5 , flex:4 , textAlign:'right' , borderWidth:1}}>
             {carObj.cost || ''} ديـــنار
+        </Text>
+</View>
+
+<View style={{ margin:5 , display:'flex' , flexDirection:'row-reverse'  }}>
+    <Text style={styles.label}>
+        المدة : 
+    </Text>
+        <Text style={{paddingHorizontal:10 , backgroundColor:'white' , padding:5 , flex:4 , textAlign:'right' , borderWidth:1}}>
+            {
+                humanizeDuration(moment
+                .duration(moment(carObj.end_at, 'YYYY/MM/DD')
+                .diff(moment(carObj.start_at, 'YYYY/MM/DD'))
+                )
+                .locale('ar')
+                .asMilliseconds() , { largest: 3 , language:'ar' , units: ["y", "mo" , 'd'] , round: true  })
+            }
         </Text>
 </View>
 
@@ -544,7 +783,8 @@ const styles = StyleSheet.create({
 		label:{
 			textAlign:'right' ,
 		 	marginLeft:10 ,
-			 width:80
+			width:80 ,
+
 		} ,
 		spinnerContener: {
 			// display:'flex' ,

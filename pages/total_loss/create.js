@@ -22,9 +22,10 @@ const AppStack = createNativeStackNavigator();
 
 
 function Create(props){
+    console.log(moment().format('YYYY/MM/DD'))
     const [image , setImage] = useState(null)
-    const [start_at , setStartAt] = useState(new Date())
-    const [end_at , setEndAt] = useState(new Date(new Date().getFullYear() + 1 , new Date().getMonth() , new Date().getDay()))
+    const [start_at , setStartAt] = useState(moment().format('YYYY/MM/DD'))
+    const [end_at , setEndAt] = useState(moment().add(1,'year').format('YYYY/MM/DD'))
     const [open , setOpen] = useState(false)
     const [imageBack , setImageBack] = useState(null)
     const [uploading , setUploading] = useState(null)
@@ -233,7 +234,7 @@ function Create(props){
                     // ... You can check the source to find the other keys.
                     }}
                     onDateChange={(date) => {
-                        setEndAt(date) ;
+                        setStartAt(date) ;
                         setCarObj(c=>{ return {...c , start_at:date}})
                     }}
                 />
@@ -273,12 +274,8 @@ function Create(props){
             <Text style={{ fontSize:18   , textAlign:'right' , flex:1 }}>المدة</Text>
                 <Text>
                     {
-                        humanizeDuration(moment
-                        .duration(moment(end_at, 'YYYY/MM/DD')
-                        .diff(moment(start_at, 'YYYY/MM/DD'))
-                        )
-                        .locale('ar')
-                        .asMilliseconds() , { largest: 3 , language:'ar' , units: ["y", "mo" , 'd'] , round: true  })
+                        humanizeDuration(new Date(end_at) - new Date(start_at) + 43200000 
+                        , { largest: 3 , language:'ar' , units: ["y", "mo" , 'd'] , round: true   })
                     }
                 </Text>
             </View>
@@ -533,13 +530,9 @@ function Next(props){
             <Text style={{  textAlign:'right' , flex:1 }}>مدة التأمين</Text>
                 <Text>
                     {
-                        humanizeDuration(moment
-                            .duration(moment(obj.end_at, 'YYYY/MM/DD')
-                            .diff(moment(obj.start_at, 'YYYY/MM/DD'))
-                            )
-                            .locale('ar')
-                            .asMilliseconds() , { largest: 3 , language:'ar' , units: ["y", "mo" , 'd'] , round: true  })
-                        }
+                        humanizeDuration(new Date(obj.end_at) - new Date(obj.start_at) + 43200000 
+                        , { largest: 3 , language:'ar' , units: ["y", "mo" , 'd'] , round: true   })
+                    }
                 </Text>
             </View>
 
@@ -585,7 +578,7 @@ function Checkout(props){
         const res = await axios.post( 'https://yaqeens.com/api/checkKroka' , {car:carObj})
         if(res.data){
             console.log(res.data)
-            setCarObj(k => { return  { ...k , krooka : [' لا يوجد نتائج ، الرجاء المحاولة مرة أخرى ' , ' نتيجة البحث : 0 تطابق '].includes(res.data.krooka.html)  ? 'لا يوجد حوادث ' : res.data.krooka.children.length -1 , cost:res.data.cost }})
+            setCarObj(k => { return  { ...k , krooka : res.data.krooka == 0 ? 'لا يوجد حوادث' : res.data.krooka + ' حوادث ', cost:res.data.cost }})
         }
 }
 
@@ -701,12 +694,8 @@ function Checkout(props){
     </Text>
         <Text style={{paddingHorizontal:10 , backgroundColor:'white' , padding:5 , flex:4 , textAlign:'right' , borderWidth:1}}>
             {
-                humanizeDuration(moment
-                .duration(moment(carObj.end_at, 'YYYY/MM/DD')
-                .diff(moment(carObj.start_at, 'YYYY/MM/DD'))
-                )
-                .locale('ar')
-                .asMilliseconds() , { largest: 3 , language:'ar' , units: ["y", "mo" , 'd'] , round: true  })
+                humanizeDuration(new Date(carObj.end_at) - new Date(carObj.start_at) + 43200000 
+                 , { largest: 3 , language:'ar' , units: ["y", "mo" , 'd'] , round: true   })
             }
         </Text>
 </View>

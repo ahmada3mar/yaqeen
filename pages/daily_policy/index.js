@@ -1,11 +1,9 @@
 import React, { useState , useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import axios from 'axios'
-import { ScrollView, Text , View , Image  , Dimensions, Button, TouchableOpacity   } from 'react-native';
+import { ScrollView, Text , View , Image  ,TouchableOpacity, Alert   } from 'react-native';
 import Card from './card';
 import reload from '../../img/reload.png'
-import CodePush from 'react-native-code-push';
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 
@@ -19,7 +17,7 @@ export default function DailyPolicy(props){
       
 
          const getData = async ()=> {
-          const data =  await axios.get(`https://yaqeens.com/api/get-policy`).catch(err =>  CodePush.restartApp())
+          const data =  await axios.get(`https://yaqeens.com/api/get-policy`).catch(err =>  Alert.alert('خطا' , err.toString()))
           setData(data.data)
         }
 

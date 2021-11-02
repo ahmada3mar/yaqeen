@@ -8,7 +8,9 @@ import CreateTotal_loss from './pages/total_loss/create'
 import * as Permissions from 'expo-camera';
 import logo from './assets/icon.png'
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SplashScreen from 'expo-splash-screen';
+
 
 
 
@@ -94,23 +96,26 @@ export default function App() {
 
   
 
-  React.useEffect( ()=>{
+  React.useEffect( async ()=>{
     Permissions.requestCameraPermissionsAsync();
+    await SplashScreen.preventAutoHideAsync();
 
-    axios.get(`https://yaqeens.com/api/login`  )
+     axios.get(`https://yaqeens.com/api/login`  )
     .then(res=>{
       if(res.data.id){
         setUser(res.data)
       }
+      SplashScreen.hideAsync();
     })
 
 } , [])
 
 
-
   if(!user){
     return <LoginPage setUser={setUser} />
   }
+
+
 
   return (
     <NavigationContainer>

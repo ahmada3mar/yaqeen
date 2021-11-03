@@ -8,7 +8,7 @@
                 <h5 class="card-title text-right">بيانات البوليصة</h5>
             </div>
             <div class="card-body p-4">
-                <form @if($policy->status == 0 ) method="post"  action="{{ route('update-policy'  , $policy->id) }}" @endif>
+                <form method="post"  @if($policy->status == 0 )  action="{{ route('update-policy'  , $policy->id) }}" @else  action="{{ route('show-policy'  , $policy->id) }}"  @endif>
                     @csrf
                     <div class="form-group row">
                         <label for="middle-name" class="control-label col-3">على حســـاب</label>
@@ -47,6 +47,10 @@
                                 <input @if($policy->status != 0 ) disabled @endif  @if($policy->type == 2) checked @endif class="custom-control-input" type="radio" value="2" id="customRadio2" name="type">
                                 <label for="customRadio2" class="custom-control-label">شامــل</label>
                             </div>
+                            <div class="custom-control-inline custom-radio">
+                                <input @if($policy->status != 0 ) disabled @endif  @if($policy->type == 3) checked @endif class="custom-control-input" type="radio" value="3" id="customRadio2" name="type">
+                                <label for="customRadio2" class="custom-control-label">ملاحق</label>
+                            </div>
 
                         </div>
                         @if ($errors->has('type'))
@@ -71,7 +75,7 @@
                         <label for="middle-name" class="control-label col-3">نوع الهيكل</label>
                         <div class="col-md-6 col-xs-12">
                             <select @if($policy->status != 0 ) disabled @endif  name="car_type" class="form-control">
-                            <option @if( old('car_type') == 'صالون' || (!old('car_type') && $policy->car_type == 'صالون')) selected @endif value="صالون">صالون</option>
+                            <option @if( old('car_type') == 'ركوب صغير' || (!old('car_type') && $policy->car_type == 'ركوب صغير')) selected @endif value="ركوب صغير">ركوب صغير</option>
                             <option @if( old('car_type') == 'شحن' || (!old('car_type') && $policy->car_type == 'شحن')) selected @endif value="شحن">شحن</option>
                             <option @if( old('car_type') == 'نقل مشترك' || (!old('car_type') && $policy->car_type == 'نقل مشترك')) selected @endif value="نقل مشترك">نقل مشترك</option>
                             </select>
@@ -206,6 +210,15 @@
                                 </div>
                                 <div class="col-6  pl-0">
                                     <button name="status" type="submit" value="-1" class="btn btn-danger col-12">رفض</button>
+                                </div>
+                            </div>
+                        </div>
+                    @elseif($policy->status == 1)
+                        <div class="form-group row">
+                            <div class="col-3"></div>
+                            <div class="row col-6 pl-0">
+                                <div class="col-12">
+                                    <button name="status" type="submit" value="1" class="btn btn-success col-12">طباعة</button>
                                 </div>
                             </div>
                         </div>

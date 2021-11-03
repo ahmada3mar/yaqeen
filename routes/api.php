@@ -29,6 +29,7 @@ Route::post('/checkKroka', 'PolicyController@checkKroka');
 
 // CRUD
 Route::post('/store-policy', 'PolicyController@store');
+Route::post('/store-appendice', 'PolicyController@appendice');
 Route::get('/get-policy', 'PolicyController@getPolicy');
 
 });

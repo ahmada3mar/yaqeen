@@ -45,8 +45,8 @@ class BranchController extends Controller
        $data = $request->validate([
             'name' => 'required|string|max:191',
             'total_los_cars' => 'required|numeric|min:86',
-            'total_los_cars_accedint' => 'required|numeric|min:136',
-            'total_los_vans' => 'required|numeric|min:180',
+            'total_los_cars_accedint' => 'required|numeric|min:100',
+            'total_los_vans' => 'required|numeric|min:165',
             'total_los_pickups' => 'required|numeric|min:86',
             'full_cover_cars' => 'required|numeric|min:86',
             'full_cover_cars_per_k' => 'required|numeric',
@@ -92,7 +92,25 @@ class BranchController extends Controller
      */
     public function update(Request $request, Branch $branch)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:191',
+            'total_los_cars' => 'required|numeric|min:86',
+            'total_los_cars_accedint' => 'required|numeric|min:' . $request->total_los_cars,
+            'total_los_vans' => 'required|numeric|min:165',
+            'total_los_vans_accedint' => 'required|numeric|min:'. $request->total_los_vans,
+            'total_los_pickups' => 'required|numeric|min:200',
+            'total_los_pickups_accedint' => 'required|numeric|min:' . $request->total_los_pickups,
+            'full_cover_cars' => 'required|numeric|min:86',
+            'full_cover_cars_per_k' => 'required|numeric',
+            'full_cover_vans' => 'required|numeric|min:86',
+            'full_cover_vans_per_k' => 'required|numeric',
+            'full_cover_pickups' => 'required|numeric|min:86',
+            'full_cover_pickups_per_k' => 'required|numeric',
+        ]);
+
+        $branch->update($data);
+
+        return redirect(route('branches'))->with(['CRUD' => 'تم التحديث بنجاح']) ;
     }
 
     /**

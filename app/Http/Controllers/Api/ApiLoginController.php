@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -40,12 +41,12 @@ class ApiLoginController extends Controller
     {
         // return $request->all() ;
         if(Auth::user()){
-            return Auth::user()->with('branch')->first();
+            return User::with('branch')->find(Auth::user()->id);
         }
 
         if (Auth::attempt($request->all())) {
             $request->session()->regenerate();
-            $user = Auth::user()->with('branch')->first();
+            $user = User::with('branch')->find(Auth::user()->id);
             return [$user , $user->createToken('yaqeenToken')->plainTextToken];
         }else{
             return 'faild';

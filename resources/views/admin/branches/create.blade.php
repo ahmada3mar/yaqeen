@@ -7,7 +7,8 @@
                 <h5 class="card-title text-right">أضافة فرع</h5>
             </div>
         <div class="card-body p-4">
-            <form  action="{{ route('store-branches') }}">
+            <form method="POST" action="{{ route('store-branches') }}">
+                @csrf
                 <div class="form-group row">
                     <label class="control-label col-3" for="first-name">الاسم <span class="required">*</span>
                     </label>
@@ -55,6 +56,18 @@
                     </span>
                 @endif
                 </div>
+                 <div class="form-group row">
+                    <label class="control-label col-3" for="last-name">خسارة كلية شحن (حادث)<span class="required">*</span>
+                    </label>
+                    <div class="col-9">
+                    <input type="text" value="{{ old('total_los_vans_accedint') }}"  name="total_los_vans_accedint"  class="form-control col-md-7 col-xs-12">
+                    </div>
+                    @if ($errors->has('total_los_vans_accedint'))
+                    <span class="text-danger">
+                        <strong>{{ $errors->first('total_los_vans_accedint') }}</strong>
+                    </span>
+                @endif
+                </div>
                 <div class="form-group row">
                     <label for="middle-name" class="control-label col-3">خسارة كلية نقل مشترك</label>
                     <div class="col-9">
@@ -63,6 +76,18 @@
                     @if ($errors->has('total_los_pickups'))
                     <span class="text-danger">
                         <strong>{{ $errors->first('total_los_pickups') }}</strong>
+                    </span>
+                @endif
+                </div>
+                 <div class="form-group row">
+                    <label class="control-label col-3" for="last-name">خسارة كلية نقل مشترك (حادث)<span class="required">*</span>
+                    </label>
+                    <div class="col-9">
+                    <input type="text" value="{{ old('total_los_pickups_accedint') }}"  name="total_los_pickups_accedint"  class="form-control col-md-7 col-xs-12">
+                    </div>
+                    @if ($errors->has('total_los_pickups_accedint'))
+                    <span class="text-danger">
+                        <strong>{{ $errors->first('total_los_pickups_accedint') }}</strong>
                     </span>
                 @endif
                 </div>

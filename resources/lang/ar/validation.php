@@ -334,6 +334,8 @@ return [
         'confirmation' => 'التاكيد',
         'politically_person' =>  'اختيار الاجابة المناسبة',
         'us_citizen' => 'المواطنون الأمريكيون',
+        
+        'total_los_cars' => 'حسارة كلية صالون',
     ],
 
     'credit_card' => [

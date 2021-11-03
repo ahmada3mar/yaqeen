@@ -49,7 +49,7 @@
                                     <tbody >
                                         @forelse ($policies  as $policy )
                                             <tr>
-                                                <th scope="row">1</th>
+                                                <th scope="row">{{ $loop->index+1 }}</th>
                                                 <td class="col-4">{{ $policy->name }}</td>
                                                 <td>{{ $policy->car_type }}</td>
                                                 <td>{{ \App\models\Policy::$types[$policy->type] }}</td>

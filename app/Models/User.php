@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
+use \App\Models\Policy;
 
 
 class User extends Authenticatable
@@ -58,8 +58,24 @@ class User extends Authenticatable
     {
         return $this->hasMany(Policy::class);
     }
+    
+    public function userBranch()
+    {
+
+        return $this->belongsToMany(Branch::class);
+    }
+
+    public function getMyPolicy()
+    {
+        return Policy::where(function($q){
+            $q->where( 'user_id' , $this->id)->orWhereIn('branch_id' , $this->userBranch->pluck('id')->toArray());
+        });
+    }
+    
     public function branch()
     {
         return $this->belongsTo(Branch::class);
     }
+
+
 }

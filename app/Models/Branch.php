@@ -12,4 +12,8 @@ class Branch extends Model
     protected $guarded  = ['id'] ;
 
 
+    public function policy()
+    {
+        return $this->hasOne(Policy::class);
+    }
 }

@@ -52299,4 +52299,21 @@ a.text-muted:hover {
 .dark-mode .border-dark {
   border-color: #4b545c !important;
 }
+
+
+@media print { 
+
+  * {
+    color: #000;
+  }
+  .content-wrapper {
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  footer {
+    display: none;
+  }
+
+}
 /*# sourceMappingURL=adminlte.css.map */

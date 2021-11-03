@@ -3,15 +3,15 @@
     <div class="right_col" role="maSSSin">
         <div style="margin-top: 50px" class="row">
             <div class="col-12">
-                <div style="padding: 5px 0" class="row">
-                    <div class="col-xs-3">
-                        تاريخ التسجيل : 01/01/2021
+                <div style="padding: 5px 0" class="d-flex flex-row-reverse">
+                    <div class="col-3">
+                        تاريخ التسجيل : {{ $policy->created_at->format('d/m/Y') }}
                     </div>
-                    <div class="col-xs-3">
+                    <div class="col-3">
                         خسارة كلية
                     </div>
-                    <div class="col-xs-6">
-                        رقم العــــقد -:  1 / 116 / 29 / 2020 / 1145 / 92 / 1
+                    <div class="col-6">
+                        رقم العــــقد -:  1 / 116 / 29 / 2020 / {{ $policy->policy_number }} / 92 / 1
                     </div>
                 </div>
                 <table class="table table-bordered-black">
@@ -28,16 +28,16 @@
                                 <div style="display: flex ; justify-content: space-between">
                                     <div style="text-align: right ;  white-space: nowrap;overflow: hidden "
                                         class="col-xs-7">
-                                        المؤمن لــــــــــه &nbsp;&nbsp;&nbsp; احمد عبد السميع محمد اعمر
+                                        المؤمن لــــــــــه &nbsp;&nbsp;&nbsp;  {{ $policy->name }}
                                         <br>
                                         العـنـــــــــــــــوان &nbsp;&nbsp;&nbsp;-: O.BOX.p عمان 0 0 الاردن<span
                                             style="margin: 0 60px">0799991230</span>
                                     </div>
                                     <div style="text-align: right ; white-space: nowrap; overflow: hidden"
                                         class="col-xs-5">
-                                        المستفيـــــــــد : احمد عبد السميع محمد اعمر
+                                        المستفيـــــــــد : 
                                         <br>
-                                        على حســـــــــاب : مركز اليقين الاردني لاصدار وثائق التأمين الخسارة تلات عهخل هخعلن
+                                        على حســـــــــاب : مركز اليقين الاردني لاصدار وثائق التأمين /  {{ \App\Models\Policy::$types[$policy->type] }}
                                     </div>
                                 </div>
 
@@ -49,8 +49,8 @@
                         </tr>
                         <tr>
                             <td style="text-align: right">مـدة التــــامين &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:<span
-                                    style="margin: 0 20px">من 01/01/2021 الساعة 12 ظهرا</span><span style="margin: 0 50px">الى
-                                    01/01/2022 الساعة 12 ظهرا</span></td>
+                                    style="margin: 0 20px">من  {{  date('d/m/Y' , strtotime($policy->start_at)) }} الساعة 12 ظهرا</span><span style="margin: 0 50px">الى
+                                     {{ date('d/m/Y' , strtotime($policy->end_at)) }} الساعة 12 ظهرا</span></td>
                         </tr>
                         <tr>
                             <td>
@@ -61,7 +61,7 @@
                                                 رقم اللوحة &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:
                                             </div>
                                             <div style="margin: 0 20px">
-                                                15-12563
+                                                 {{ $policy->car_number }}
                                             </div>
                                         </div>
                                         <div style="display: flex" class="row">
@@ -69,7 +69,7 @@
                                                 نوع المركبـــة &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:
                                             </div>
                                             <div style="margin: 0 20px">
-                                                هيونداي
+                                                 {{ $policy->car_name }}
                                             </div>
                                         </div>
                                         <div style="display: flex" class="row">
@@ -77,7 +77,7 @@
                                                 نوع الهيكـــــل &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:
                                             </div>
                                             <div style="margin: 0 20px">
-                                                صالون
+                                                 {{ $policy->car_type }}
                                             </div>
                                         </div>
                                         <div style="display: flex" class="row">
@@ -112,7 +112,7 @@
                                                 سنة الصنــــع &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:
                                             </div>
                                             <div style="margin: 0 20px">
-                                                2015
+                                                 {{ $policy->car_model }}
                                             </div>
                                         </div>
                                         <div style="display: flex" class="row">
@@ -128,7 +128,7 @@
                                                 رقم المحــــــرك &nbsp;&nbsp;&nbsp;&nbsp;-:
                                             </div>
                                             <div style="margin: 0 20px">
-                                                G4KKFA600885
+                                                 {{ $policy->eng_number }}
                                             </div>
                                         </div>
                                         <div style="display: flex" class="row">
@@ -136,7 +136,7 @@
                                                 رقم الشاصـــــي &nbsp;&nbsp;&nbsp;&nbsp;-:
                                             </div>
                                             <div style="margin: 0 20px">
-                                                KMHEC4A47FA132032
+                                                 {{ $policy->body_number }}
                                             </div>
                                         </div>
                                     </div>

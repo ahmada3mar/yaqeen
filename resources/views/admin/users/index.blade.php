@@ -27,45 +27,34 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
                         <div style="display: flex ; justify-content: space-between" class="x_title col-12">
-                            <h3>الافرع</h3>
-                            <a href="{{ route('create-branches') }}" style="margin: 5px" class="btn btn-success">اضافة
-                                فرع</a>
+                            <h3>المستخدمين</h3>
+                            <a href="{{ route('create-user') }}" style="margin: 5px" class="btn btn-success">اضافة
+                                مستخدم</a>
                         </div>
                             <div class="table-responsive">
                                 <table class="table  table-striped table-hover  align-middle">
                                 <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>اسم المستحدم</th>
                                         <th>الاسم</th>
-                                        <th>صالون</th>
-                                        <th>(حادث)صالون</th>
-                                        <th>شحن</th>
-                                        <th>نقل مشترك</th>
-                                        <th>شامل صالون (10000)</th>
-                                        <th>شامل صالون لكل الف</th>
-                                        <th>شامل شحن (10000)</th>
-                                        <th>شامل شحن لكل الف</th>
-                                        <th>شامل نقل مشترك (10000)</th>
-                                        <th>شامل نقل مشترك لكل الف</th>
+                                        <th>الايميل</th>
+                                        <th>الفرع</th>
+                                        <th>الصفة</th>
+                                        <th>تاريخ الانشاء</th>
                                         <th>الاجراءات</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($branches as $branch )
+                                    @forelse ($users as $user )
                                         <tr>
-                                            <th scope="row">{{ $loop->index+1 }}</th>
-                                            <td>{{ $branch->name }}</td>
-                                            <td>{{ $branch->total_los_cars }}</td>
-                                            <td>{{ $branch->total_los_cars_accedint }}</td>
-                                            <td>{{ $branch->total_los_vans }}</td>
-                                            <td>{{ $branch->total_los_pickups }}</td>
-                                            <td>{{ $branch->full_cover_cars }}</td>
-                                            <td>{{ $branch->full_cover_cars_per_k }}</td>
-                                            <td>{{ $branch->full_cover_vans }}</td>
-                                            <td>{{ $branch->full_cover_vans_per_k }}</td>
-                                            <td>{{ $branch->full_cover_pickups }}</td>
-                                            <td>{{ $branch->full_cover_pickups_per_k }}</td>
-
+                                            <th scope="row">{{ $loop->index + 1 }}</th>
+                                            <td>{{ $user->username }}</td>
+                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $user->email }}</td>
+                                            <td>{{ $user->branch->name }}</td>
+                                            <td>{{ $user->role }}</td>
+                                            <td>{{ $user->created_at }}</td>
                                             <td>
                                                 <ul class="nav ">
                                                     <li class="dropdown">
@@ -73,7 +62,7 @@
                                                             data-toggle="dropdown" role="button" aria-expanded="false"><i
                                                                 class="fa fa-chevron-down"></i></a>
                                                         <ul class="dropdown-menu" style="padding: 8px 5px" role="menu">
-                                                            <li><a href="{{ route('edit-branches', $branch->id) }}"> <i
+                                                            <li><a href="{{ route('edit-users', $user->id) }}"> <i
                                                                         class="fa fa-wrench"></i> تعديل</a>
                                                             </li>
                                                             <li><a style="color: rgb(212, 9, 9)" href="#"><i

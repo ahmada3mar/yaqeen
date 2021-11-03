@@ -1,5 +1,5 @@
 import React, { useState , useEffect } from 'react';
-import { ScrollView, Text , View , StyleSheet , Picker , ImageBackground , Dimensions, Button, TouchableOpacity  , Animated , Easing, TextInput, Alert } from 'react-native';
+import { ScrollView, Text , View , StyleSheet  , ImageBackground , Dimensions, Button, TouchableOpacity  , Animated , Easing, TextInput, Alert } from 'react-native';
 import RadioButtonRN from 'radio-buttons-react-native';
 import { CommonActions } from '@react-navigation/native';
 import front_id from '../../img/front-card.png'
@@ -10,6 +10,7 @@ import * as ImageManipulator from 'expo-image-manipulator';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DatePicker from 'react-native-datepicker'
 import moment, { now } from 'moment';
+import {Picker} from '@react-native-community/picker';
 import humanizeDuration from "humanize-duration"
 import {cars} from  '../../data/cars'
 
@@ -63,22 +64,51 @@ function Create(props){
 		}
 	};
 
+    const chooseImg = (type)=>{
+        Alert.alert('اختر مكان الصورة' , 'يرجى اختيار مكان الرخصة' , [
+            {
+                text:'الكاميرا' ,
+                onPress: type == 'front' ? () => _takePhoto('camera') : ()=> _takePhotoBack('camera')
+            },
+            {
+                text:'المعرض' ,
+                onPress: type == 'front' ? () => _takePhoto('gallary') : ()=> _takePhotoBack('gallary')
+            }
+        ])
+    }
 
-    const  _takePhoto = async () => {
-		let pickerResult = await ImagePicker.launchCameraAsync({
+    const  _takePhoto = async (source) => {
+        let options = {
 			allowsEditing: true,
             aspect: [ 3.375 , 2.125]
 
-		});
+		};
+
+        let pickerResult 
+
+            if(source == 'camera'){
+                pickerResult = await ImagePicker.launchCameraAsync(options);
+            }else{
+                pickerResult =  await ImagePicker.launchImageLibraryAsync(options);       
+            }
+        
 
 		_handleImagePicked(pickerResult);
 	};
 
-    const  _takePhotoBack = async () => {
-		let pickerResult = await ImagePicker.launchCameraAsync({
+    const  _takePhotoBack = async (source) => {
+        let options = {
 			allowsEditing: true,
-			aspect: [ 3.375 , 2.125]
-		});
+            aspect: [ 3.375 , 2.125]
+
+		};
+
+        let pickerResult ;
+        if(source == 'camera'){
+		     pickerResult = await ImagePicker.launchCameraAsync(options);
+        }else{
+             pickerResult = await ImagePicker.launchImageLibraryAsync(options);       
+        }
 
         if (!pickerResult.cancelled)
         try {
@@ -281,11 +311,11 @@ function Create(props){
             </View>
 
             <View style={{ flex:1  , marginVertical:5 }}>
-                <TouchableOpacity style={{ margin:10 , borderRadius:10  }} onPress={()=>_takePhoto()}>
+                <TouchableOpacity style={{ margin:10 , borderRadius:10  }} onPress={()=>chooseImg('front')}>
                    { image ?  <ImageBackground source={{ uri: image.uri }} style={{backgroundColor:'white'  , borderRadius:10  , height:240}}/> : (<ImageBackground source={front_id} style={{backgroundColor:'white'  , borderRadius:10  , height:240}}/>) }
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{ margin:10 , borderRadius:10  }} onPress={()=>_takePhotoBack()}>
+                <TouchableOpacity style={{ margin:10 , borderRadius:10  }} onPress={()=>chooseImg('back')}>
                    { imageBack ?  <ImageBackground source={{ uri: imageBack.uri }} style={{backgroundColor:'white'  , borderRadius:10  , height:240}}/> : (<ImageBackground source={back_id} style={{backgroundColor:'white'  , borderRadius:10  , height:240}}/>) }
                 </TouchableOpacity>
             </View>
@@ -426,8 +456,9 @@ function Next(props){
             نوع الهيكل : 
         </Text>
         <Picker
+        mode="dialog"
         selectedValue={obj.type || ''}
-        style={{ height: 50, width: 150 , justifyContent:'flex-end' , alignContent:'flex-end' , alignItems:'flex-end' }}
+        style={{  width: 150  , overflow:'hidden' , height:40 , justifyContent:'center'  }}
         onValueChange={(itemValue, itemIndex) => setObj(c=>{ return { ...c , type: itemValue} })}
       >
         <Picker.Item label="ركوب صغير" value="ركوب صغير" />
@@ -442,8 +473,9 @@ function Next(props){
             نوع المركبة :
         </Text>
             <Picker
-            selectedValue={obj.type || ''}
-            style={{ height: 50, width: 150 , justifyContent:'flex-end' , alignContent:'flex-end' , alignItems:'flex-end' }}
+            itemStyle={{ alignItems:'center' , justifyContent:'center' , textAlign:'center' }}
+            selectedValue={obj.car_name || ''}
+            style={{  width: 150  , overflow:'hidden' , height:40 , justifyContent:'center' }}
             onValueChange={(itemValue, itemIndex) => setObj(c=>{ return { ...c , car_name: itemValue} })}
         >
             <Picker.Item key={0} label={'اختر ....'} value={""}/>
@@ -457,8 +489,9 @@ function Next(props){
             سنة الصنع :
         </Text>
         <Picker
-            selectedValue={obj.type || ''}
-            style={{ height: 50, width: 150 , justifyContent:'flex-end' , alignContent:'flex-end' , alignItems:'flex-end' }}
+            collapsable={true}
+            selectedValue={obj.car_model || ''}
+            style={{  width: 150  , overflow:'hidden' , height:40 , justifyContent:'center' }}
             onValueChange={(itemValue, itemIndex) => setObj(c=>{ return { ...c , car_model: itemValue} })}
         >
             <Picker.Item key={0} label={'اختر ....'} value={""}/>
@@ -575,7 +608,7 @@ function Checkout(props){
       })
 
       const getKrooka = async () => {
-        const res = await axios.post( 'https://yaqeens.com/api/checkKroka' , {car:carObj})
+        const res = await axios.post( 'https://yaqeens.com/api/checkKroka' , carObj)
         if(res.data){
             console.log(res.data)
             setCarObj(k => { return  { ...k , krooka : res.data.krooka == 0 ? 'لا يوجد حوادث' : res.data.krooka + ' حوادث ', cost:res.data.cost }})

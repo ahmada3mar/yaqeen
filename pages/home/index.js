@@ -1,14 +1,22 @@
 import React, { useState , useCallback } from 'react';
-import { ScrollView, Text , View , StyleSheet , ImageBackground , Dimensions, TouchableOpacity  } from 'react-native';
+import { ScrollView, Text , View , StyleSheet , ImageBackground , TouchableOpacity  } from 'react-native';
 import full_cover from '../../img/full-cover.png';
 import total_loss from '../../img/total-loss.png';
 import owner from '../../img/owner.png';
+import OwnerPage from '../owner'
+import Krooka from '../krooka'
 import acce from '../../img/acce.png';
 import { useFocusEffect } from '@react-navigation/native';
 import axios from 'axios'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
-export default function Home(props){
+
+
+const AppStack = createNativeStackNavigator();
+
+
+ function Home(props){
 
     const [data , setData] = useState([])
 
@@ -77,20 +85,34 @@ export default function Home(props){
                 </TouchableOpacity >
             </View>
             <View style={{ flex:1  , marginVertical:5}}>
-                <ImageBackground  source={owner} style={{ borderWidth:1 , borderColor:'black' , borderRadius:5  , height:250 }}/>
-                <View style={{ justifyContent:'center' , alignItems:'center',position:'absolute' , bottom:0 , backgroundColor:'#000000c7' , width:'100%' , height:50 }}>
-                    <Text style={{ fontSize:26 , fontWeight:'bold' , color:'teal' }}>نقل ملكية</Text>
-                </View>
+                <TouchableOpacity onPress={ () => props.navigation.navigate('OwnerPage') }>
+                    <ImageBackground  source={owner} style={{ borderWidth:1 , borderColor:'black' , borderRadius:5  , height:250 }}/>
+                    <View style={{ justifyContent:'center' , alignItems:'center',position:'absolute' , bottom:0 , backgroundColor:'#000000c7' , width:'100%' , height:50 }}>
+                        <Text style={{ fontSize:26 , fontWeight:'bold' , color:'teal' }}>نقل ملكية</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
             <View style={{ flex:1  , marginVertical:5}}>
-                <ImageBackground source={acce} style={{ borderWidth:1 , borderColor:'black' , borderRadius:5  , height:250}}/>
-                <View style={{ justifyContent:'center' , alignItems:'center',position:'absolute' , bottom:0 , backgroundColor:'#000000c7' , width:'100%' , height:50 }}>
-                    <Text style={{ fontSize:26 , fontWeight:'bold' , color:'teal' }}>استعلام عن حوادث</Text>
-                </View>
+                <TouchableOpacity onPress={ () => props.navigation.navigate('Krooka') }>
+                    <ImageBackground source={acce} style={{ borderWidth:1 , borderColor:'black' , borderRadius:5  , height:250}}/>
+                    <View style={{ justifyContent:'center' , alignItems:'center',position:'absolute' , bottom:0 , backgroundColor:'#000000c7' , width:'100%' , height:50 }}>
+                        <Text style={{ fontSize:26 , fontWeight:'bold' , color:'teal' }}>استعلام عن حوادث</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         </ScrollView>
     )
 }
+
+export default function Main(props){
+
+    return <AppStack.Navigator initialRouteName="Owner">
+              <AppStack.Screen name="Home" children={(r)=><Home {...r} user={props.user}  />}   options={{ headerShown: false }}/>
+              <AppStack.Screen name="OwnerPage" children={(r)=><OwnerPage {...r} user={props.user}  />}   options={{ headerShown: false }}/>
+              <AppStack.Screen name="Krooka" children={(r)=><Krooka {...r} user={props.user}  />}   options={{ headerShown: false }}/>
+          </AppStack.Navigator>
+  }
+  
 
 const styles = StyleSheet.create({
  card: {

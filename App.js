@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button , View, TextInput, ImageBackground , Text  , TouchableHighlight} from 'react-native';
+import {  View, TextInput, ImageBackground , Text  , TouchableHighlight} from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import Home from './pages/home';

@@ -16,6 +16,7 @@
                         <a href="#" class="small-box-footer">عرض المزيد <i class="fas fa-arrow-circle-left"></i></a>
                     </div>
                 </div>
+            @if(Auth::user()->role == 'admin')
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-success">
                         <div class="inner">
@@ -55,6 +56,7 @@
                         <a href="#" class="small-box-footer">عرض المزيد <i class="fas fa-arrow-circle-left"></i></a>
                     </div>
                 </div>
+            @endif
             </div>
             <!-- Main row -->
             <div class="row">

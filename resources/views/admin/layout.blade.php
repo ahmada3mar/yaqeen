@@ -37,6 +37,7 @@
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
       </ul>
+            @if(Auth::user()->role == 'admin')
 
       <!-- Right navbar links -->
       <ul class="navbar-nav mr-auto">
@@ -153,6 +154,7 @@
           </a>
         </li>
       </ul>
+    @endif
     </nav>
     <!-- /.navbar -->
 
@@ -222,6 +224,7 @@
                 </li>
               </ul>
             </li>
+          @if(Auth::user()->role == 'admin')
 
             <li class="nav-item">
                 <a href="#" class="nav-link">
@@ -414,6 +417,7 @@
                 </li>
               </ul>
             </li>
+          @endif
           </ul>
         </nav>
         <!-- /.sidebar-menu -->
@@ -484,6 +488,22 @@
                 $('select').selectpicker({liveSearch:true , size : 5 , style:'btn-outline-secondary text-light'});
             });
         })
+        document.onkeydown = function(e) {
+            if(event.keyCode == 123) {
+                return false;
+            }
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
+                return false;
+            }
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
+                return false;
+            }
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
+                return false;
+            }
+        }
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
     </script>
     <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/plugins/chart.js/Chart.min.js"></script>

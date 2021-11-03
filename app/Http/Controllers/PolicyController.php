@@ -61,7 +61,7 @@ class PolicyController extends Controller
     {
         try {
             //code...
-        
+
         $user_id = User::where('role' , 'exporter')->withCount(['policy as policy_count' => function($q){
             $q->where('created_at' , '>=' , Carbon::today())
             ->where('status' , '0');
@@ -399,9 +399,9 @@ class PolicyController extends Controller
             'OwnerType' => '0' ,
             'varResp' => '1' ,
         ];
-        
 
-        
+
+
         $query = Arr::query($data);
 
         $data['varResp'] = '3' ;
@@ -419,15 +419,15 @@ class PolicyController extends Controller
         $cc = $response->getBody()->getContents();
         $cc2 = $response2->getBody()->getContents();
 
-        
+
         $krooka = $this->html_to_obj($cc);
         $krooka2 = $this->html_to_obj($cc2);
-        
-        $count =  (int) filter_var($krooka['html'], FILTER_SANITIZE_NUMBER_INT) + (int) filter_var($krooka2['html'], FILTER_SANITIZE_NUMBER_INT);  
+
+        $count =  (int) filter_var($krooka['html'], FILTER_SANITIZE_NUMBER_INT) + (int) filter_var($krooka2['html'], FILTER_SANITIZE_NUMBER_INT);
 
         $branch = Auth::user()->branch ;
 
-        switch ($request->car['type']) {
+        switch ($request->type) {
             case 'ركوب صغير':
                 $cost =   $count  ?  $branch->total_los_cars_accedint : $branch->total_los_cars ;
 
@@ -442,11 +442,11 @@ class PolicyController extends Controller
             case 'نقل ملكية':
                 $cost =  15;
                 break;
-            
+
             default:
                 $cost = 0 ;
         }
-        
+
 
 
         return [

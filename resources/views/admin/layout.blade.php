@@ -224,6 +224,42 @@
                 </li>
               </ul>
             </li>
+
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-truck"></i>
+                  <p>
+                    VIP
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('vip') }}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>اصدار عقد VIP</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="pages/charts/flot.html" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Flot</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="pages/charts/inline.html" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Inline</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="pages/charts/uplot.html" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>uPlot</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
           @if(Auth::user()->role == 'admin')
 
             <li class="nav-item">
@@ -256,41 +292,7 @@
               </ul>
             </li>
 
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-chart-pie"></i>
-                <p>
-                  Charts
-                  <i class="right fas fa-angle-left"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="pages/charts/chartjs.html" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>ChartJS</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/charts/flot.html" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Flot</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/charts/inline.html" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Inline</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="pages/charts/uplot.html" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>uPlot</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
+
 
             <li class="nav-item">
               <a href="#" class="nav-link">
@@ -477,8 +479,9 @@
             $('[data-toggle="popover"]').on('click' ,  function(v){
                 let copyText = $(this).parent().find('input') ;
                 copyText.select()
-                document.execCommand('copy')
-                window.getSelection().removeAllRanges();
+                navigator.clipboard.writeText(copyText.val());
+
+                // window.getSelection().removeAllRanges();
                 setTimeout(function() {
                    $( v.target).popover('hide')
                 }, 1000);
@@ -502,7 +505,14 @@
                 return false;
             }
         }
+
         document.addEventListener('contextmenu', event => event.preventDefault());
+
+        $('[type=reset]').on('click' , function(){
+            let form = $(this).parent().parent().parent() ;
+            $('input').val('');
+            form.submit()
+        })
 
     </script>
     <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>

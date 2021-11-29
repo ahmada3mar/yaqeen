@@ -31,6 +31,9 @@ Route::post('/policy/{policy}/show', 'PolicyController@show')->name('show-policy
 Route::get('/create-policy', 'PolicyController@create')->name('create-policy');
 Route::post('/store-policy', 'PolicyController@store')->name('store-policy');
 Route::post('/{policy}/update-policy', 'PolicyController@update')->name('update-policy');
+Route::get('/vip', 'VipController@index')->name('vip');
+Route::get('/vip/{vip}', 'VipController@show')->name('print-vip');
+Route::post('/stor-vip', 'VipController@store')->name('store-vip');
 ## branches
 Route::get('/branches', 'BranchController@index')->name('branches');
 Route::get('/branches/{branch}', 'BranchController@edit')->name('edit-branches');

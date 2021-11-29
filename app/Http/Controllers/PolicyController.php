@@ -25,15 +25,30 @@ class PolicyController extends Controller
      */
 
 
-    public function index()
+    public function index(Request $request)
     {
         $policies = [];
 
         $user = Auth::user() ;
 
-        $policies = $user->getMyPolicy()->latest()->paginate(100);
+        $policies = $user->getMyPolicy();
 
-        return view('admin.policy.index' , compact('policies'));
+        if($request->name){
+            $policies = $policies->where('name' , 'LIKE' , '%' . $request->name . "%");
+        }
+
+        if($request->from){
+            $policies = $policies->whereDate('created_at' , '' , $request->from);
+        }
+
+        if($request->to){
+            $policies = $policies->where('end_at' , $request->to);
+        }
+
+
+        $policies = $policies->latest()->paginate(100);
+
+        return view('admin.policy.index' , compact('policies' , 'request'));
     }
 
     /**
@@ -122,7 +137,7 @@ class PolicyController extends Controller
         $res = null ;
 
         $client = new Client(['base_uri' => 'http://192.168.20.22/' , 'cookies' => true]);
-        $response = $client->get( 'krooka/login.aspx?&d=1632004121646&UN=rashed&P=0000');
+        // $response = $client->get( 'krooka/login.aspx?&d=1632004121646&UN=ayyat&P=0000');
 
         $data = [
             'd' => '1632000500211' ,
@@ -217,7 +232,7 @@ class PolicyController extends Controller
             'car_number' => 'required|string',
             'car_name' => 'required|string',
             'car_model' => 'required',
-            'body_number' => 'required|regex:/^[A-HJ-NPR-Z\d]{8}[A-HJ-NPR-Z\d]{3}\d{6}$/',
+            'body_number' => 'required',
             'eng_number' => 'required|string',
             'start_at' => 'required|date|after_or_equal:' . Carbon::now()->format('Y-m-d'),
             'end_at' => 'required|date|after:start_at',
@@ -275,7 +290,7 @@ class PolicyController extends Controller
     {
         //
     }
-    public function pending()
+    public function pending(Request $request )
     {
         $policies = Policy::query() ;
         $policies->where('status' , '0') ;
@@ -285,7 +300,7 @@ class PolicyController extends Controller
         }
 
         $policies = $policies->where('created_at' , '>=' , Carbon::today())->latest()->paginate(100);
-        return view('admin.policy.index' , compact('policies'));
+        return view('admin.policy.index' , compact('policies' , 'request'));
     }
 
     public function BackID(Request $request){
@@ -377,7 +392,7 @@ class PolicyController extends Controller
 
         $count = 0 ;
         $client = new Client(['base_uri' => 'http://192.168.20.22/' , 'cookies' => true]);
-        $response = $client->get( 'krooka/login.aspx?&d=1632004121646&UN=rashed&P=0000');
+        // $response = $client->get( 'krooka/login.aspx?&d=1632004121646&UN=ayyat&P=0000');
 
         $data = [
             'd' => '1632000500211' ,

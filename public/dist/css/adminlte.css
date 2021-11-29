@@ -52301,7 +52301,7 @@ a.text-muted:hover {
 }
 
 
-@media print { 
+@media print {
 
   * {
     color: #000;
@@ -52315,5 +52315,14 @@ a.text-muted:hover {
     display: none;
   }
 
+  body{
+    background:transparent !important ;
+}
+.dark-mode{
+    background:transparent !important ;
+}
+.content-wrapper{
+    background:transparent !important ;
+}
 }
 /*# sourceMappingURL=adminlte.css.map */

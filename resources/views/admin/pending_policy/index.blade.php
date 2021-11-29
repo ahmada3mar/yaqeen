@@ -27,15 +27,15 @@
                             <td style="overflow: hidden" scope="row">
                                 <div style="display: flex ; justify-content: space-between">
                                     <div style="text-align: right ;  white-space: nowrap;overflow: hidden "
-                                        class="col-xs-7">
+                                        class="col-7">
                                         المؤمن لــــــــــه &nbsp;&nbsp;&nbsp;  {{ $policy->name }}
                                         <br>
                                         العـنـــــــــــــــوان &nbsp;&nbsp;&nbsp;-: O.BOX.p عمان 0 0 الاردن<span
                                             style="margin: 0 60px">0799991230</span>
                                     </div>
                                     <div style="text-align: right ; white-space: nowrap; overflow: hidden"
-                                        class="col-xs-5">
-                                        المستفيـــــــــد : 
+                                        class="col-5">
+                                        المستفيـــــــــد :
                                         <br>
                                         على حســـــــــاب : مركز اليقين الاردني لاصدار وثائق التأمين /  {{ \App\Models\Policy::$types[$policy->type] }}
                                     </div>
@@ -55,7 +55,7 @@
                         <tr>
                             <td>
                                 <div style="display: flex; justify-content: space-between">
-                                    <div class="col-xs-5">
+                                    <div class="col-5">
                                         <div style="display: flex" class="row">
                                             <div>
                                                 رقم اللوحة &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:
@@ -98,7 +98,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-xs-5">
+                                    <div class="col-5">
                                         <div style="display: flex" class="row">
                                             <div>
                                                 شروط الأصلاح &nbsp;&nbsp;&nbsp;&nbsp;-:
@@ -145,10 +145,10 @@
                         </tr>
                         <tr>
                             <td style="text-align: right ;display: flex">
-                                <div class="col-xs-2">
+                                <div class="col-2">
                                     ملاحظـــــــــات &nbsp; &nbsp;-:
                                 </div>
-                                <div class="col-xs-10">التحمل في حال الخساره الكليه للمركبه10% من القيمة التامينيه او القيمه
+                                <div class="col-10">التحمل في حال الخساره الكليه للمركبه10% من القيمة التامينيه او القيمه
                                     الفعليه ايهما اقل / يستثنى من حدود التغطيه الخساره او الاضرار الناتجه عن السرقه الكليه او السرقه
                                     الجزئيه
                                 </div>
@@ -157,7 +157,7 @@
                         <tr>
                             <td style="padding: 0">
                                 <div style="display: flex">
-                                    <div style="border: black solid 1px" class="col-xs-6">
+                                    <div style="border: black solid 1px" class="col-6">
                                         <div style="text-align: center ; margin-bottom: 5px">
                                             <b style=" border-bottom: black solid 3px ">
                                                 الاعفــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــاءات&nbsp;&nbsp;&nbsp;&nbsp;-:
@@ -184,7 +184,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div style="border: black solid 1px" class="col-xs-6">
+                                    <div style="border: black solid 1px" class="col-6">
                                         <div style="text-align: center ; margin-bottom: 5px">
                                             <b style=" border-bottom: black solid 3px ; padding: 0 60px">
                                                 القــــــــــــــــــــــســــــــــــــــــــــــــــــــــط&nbsp;&nbsp;&nbsp;&nbsp;-:
@@ -201,23 +201,23 @@
                         </tr>
                         <tr>
                             <td>
-                                <div style="padding: 0 20px" class="row">
-                                    <div class="col-xs-3">
+                                <div style="padding: 0 20px" class="row flex-row-reverse">
+                                    <div class="col-3">
                                         الاتحاد العربي الدولي للتامين
                                     </div>
-                                    <div class="col-xs-6">
+                                    <div class="col-6">
                                         بالدينار اردني
                                     </div>
-                                    <div class="col-xs-3">
+                                    <div class="col-3">
                                         جميـــع المبالــــغ
                                     </div>
                                 </div>
                                 <br>
                                 <div style="padding: 0 20px ; display: flex" >
-                                    <div class="col-xs-6">
+                                    <div class="col-6">
                                         دقــق   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...................
                                     </div>
-                                    <div class="col-xs-5">
+                                    <div class="col-5">
                                         التوقــيع &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...............
                                     </div>
                                 </div>

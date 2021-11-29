@@ -4,17 +4,38 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
                         <div class="x_content">
-                            <form class="form-horizonta" action="">
-                                <div style=" display: inline-flex;" class="form-group">
+                            <form class="form-horizonta" action="{{ route('policy') }}">
+                                <div  class="form-group row col-4">
                                     <label style="display: flex ; align-items: center"
-                                        class="col-sm-2 control-label">الاسم</label>
+                                        class="col-sm-3 control-label">الاسم</label>
                                     <div class="input-group col-sm-9">
-                                        <input type="text" class="form-control">
-                                        <span class="input-group-btn">
-                                            <button type="submit" class="btn btn-primary">بحث</button>
-                                        </span>
+                                        <input value="{{ $request->name }}" name="name" type="text" class="form-control">
                                     </div>
+                                </div>
 
+                                <div  class="form-group row col-4">
+                                    <label style="display: flex ; align-items: center"
+                                        class="col-sm-3 control-label">من تاريخ</label>
+                                    <div class="input-group col-sm-9">
+                                        <input value="{{ $request->from }}" name="from" type="date"  class="form-control">
+                                    </div>
+                                </div>
+
+                                <div  class="form-group row col-4">
+                                    <label style="display: flex ; align-items: center"
+                                        class="col-sm-3 control-label">الى تاريخ</label>
+                                    <div class="input-group col-sm-9">
+                                        <input value="{{ $request->to }}" name="to" type="date"  class="form-control">
+                                    </div>
+                                </div>
+
+                                <div  class="form-group row col-4">
+                                    <div class="col-6">
+                                        <button class="btn btn-primary col-12" >بحث</button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="reset" class="btn btn-primary col-12" >اعادة تعين</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
